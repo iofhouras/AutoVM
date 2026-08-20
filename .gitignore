@@ -1,0 +1,11 @@
+# Build output
+dist/
+
+# PowerShell / editor noise
+*.suo
+*.user
+.vs/
+.vscode/
+
+# Local test scratch
+TestResults/

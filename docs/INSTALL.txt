@@ -1,0 +1,69 @@
+AutoVM
+======
+
+AutoVM sets up a Linux virtual machine on this computer for you.
+
+You choose a login and a password. AutoVM does the rest: it checks what this
+machine can do, sizes the virtual machine to fit it, downloads a verified
+system image, installs it without asking you installer questions, and leaves a
+control panel on your desktop.
+
+
+Before you start
+----------------
+
+  *  Administrator rights. Virtualization software installs a driver.
+  *  About 45 GB of free disk space, and 6 GB of memory or more.
+  *  Hardware virtualization enabled in your firmware (BIOS/UEFI). AutoVM
+     checks this on the second screen and tells you how to fix it if it is off.
+  *  A network connection. The system image is several gigabytes.
+  *  Time. Expect 30 to 90 minutes, mostly unattended. Keep the computer awake
+     and plugged in.
+
+
+Using it
+--------
+
+  1.  Start AutoVM from the Start menu.
+  2.  Let it check this device, then choose the system, login and password.
+  3.  Review what will be created, then start the build.
+  4.  When it finishes, use the AutoVM Control Center shortcut on your desktop
+      to start, shut down or reset the machine.
+
+Your login is case-sensitive inside Linux. If you type a capital letter, you
+will need that capital letter to sign in.
+
+
+What AutoVM will not do
+-----------------------
+
+  *  It does not change your firewall or your Windows security settings.
+  *  It does not delete any virtual machine you already have, unless you turn
+     that on and type DESTROY to confirm.
+  *  It does not keep a copy of your password.
+  *  It does not give anything on your network a way into the virtual machine.
+     The machine can reach out; nothing can reach in. That is why a short
+     password is acceptable - change it before switching the machine to
+     bridged networking or forwarding a port into it.
+
+
+Where things are
+----------------
+
+  Application        C:\Program Files\AutoVM
+  Logs and state     C:\ProgramData\AutoVM\logs
+  Downloaded images  C:\ProgramData\AutoVM\cache
+  The machine        Wherever AutoVM told you it had the most room, usually
+                     C:\AutoVM\Machines
+
+Uninstalling AutoVM removes the application. It does not remove the virtual
+machine, the downloaded image, or VirtualBox - delete those yourself if you
+want the space back.
+
+
+If something goes wrong
+-----------------------
+
+Every run writes a full log to C:\ProgramData\AutoVM\logs. The final screen
+names the step that stopped and what to do about it. Starting AutoVM again
+carries on from the last completed step rather than repeating work.

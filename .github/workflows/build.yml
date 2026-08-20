@@ -1,0 +1,113 @@
+name: build
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: engine tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check every script parses
+        shell: pwsh
+        run: |
+          $failures = 0
+          Get-ChildItem src, tests, build -Recurse -Include *.ps1, *.psm1, *.psd1 | ForEach-Object {
+            $tokens = $null; $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$errors)
+            if ($errors.Count) {
+              $failures++
+              Write-Host "::error file=$($_.FullName)::$($errors[0].Message)"
+            }
+          }
+          if ($failures) { throw "$failures file(s) failed to parse." }
+
+      - name: Check the window definition is well-formed
+        shell: pwsh
+        run: |
+          $document = New-Object System.Xml.XmlDocument
+          $document.LoadXml((Get-Content src/AutoVM.App/MainWindow.xaml -Raw))
+          Write-Host "MainWindow.xaml parsed: $($document.SelectNodes('//*').Count) elements"
+
+      - name: Run the test suite
+        shell: pwsh
+        run: ./tests/Invoke-Tests.ps1
+
+  installer:
+    name: windows installer
+    runs-on: windows-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Work out the version
+        id: version
+        shell: pwsh
+        run: |
+          $version = if ($env:GITHUB_REF -like 'refs/tags/v*') {
+            $env:GITHUB_REF -replace '^refs/tags/v', ''
+          } else {
+            '1.0.0-build.{0}' -f $env:GITHUB_RUN_NUMBER
+          }
+          # Inno Setup wants a plain numeric version in the filename.
+          $fileVersion = ($version -split '-')[0]
+          "version=$version"         | Out-File $env:GITHUB_OUTPUT -Append
+          "fileVersion=$fileVersion" | Out-File $env:GITHUB_OUTPUT -Append
+          Write-Host "Building $version"
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Build the launcher and the installer
+        shell: pwsh
+        run: ./build/Build-Installer.ps1 -Version ${{ steps.version.outputs.fileVersion }}
+
+      - name: Verify the engine loads on Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          Import-Module ./dist/staging/AutoVM/AutoVM.psd1 -Force
+          $commands = (Get-Command -Module AutoVM).Count
+          if ($commands -lt 20) { throw "Only $commands commands were exported." }
+          $profile = Get-AutoVMHostProfile
+          $guest = Get-AutoVMGuestCatalog -Id kali
+          $plan = New-AutoVMPlan -HostProfile $profile -Guest $guest
+          Write-Host ("Windows PowerShell 5.1 plan: " + (Format-AutoVMPlanSummary -Plan $plan))
+
+      - name: Run the test suite on Windows
+        shell: pwsh
+        run: ./tests/Invoke-Tests.ps1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AutoVM-Setup-${{ steps.version.outputs.version }}
+          path: dist/AutoVM-Setup-*.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish the release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/AutoVM-Setup-*.exe
+          generate_release_notes: true
+          body: |
+            ## AutoVM ${{ steps.version.outputs.version }}
+
+            Download `AutoVM-Setup-${{ steps.version.outputs.fileVersion }}.exe` below, run it, and start
+            AutoVM from the Start menu.
+
+            AutoVM checks what your device can do, sizes a Linux virtual machine to fit it,
+            downloads a verified system image, installs it unattended with the login and
+            password you choose, and leaves a control panel on your desktop.
+
+            Needs Windows 10 or 11 (64-bit), administrator rights, hardware virtualization
+            enabled in firmware, and about 45 GB of free disk space.
