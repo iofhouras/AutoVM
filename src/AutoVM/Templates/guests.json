@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "guests": [
+    {
+      "id": "kali",
+      "name": "Kali Linux",
+      "description": "Debian-derived security distribution with the Xfce desktop. The default guest.",
+      "family": "debian-installer",
+      "vboxOsType": "Debian_64",
+      "isoBaseUrl": "https://cdimage.kali.org/current/",
+      "isoPattern": "kali-linux-[0-9.]+-installer-amd64\\.iso",
+      "checksumFile": "SHA256SUMS",
+      "fallbackBaseUrl": "https://kali.download/base-images/current/",
+      "mirrorHostname": "http.kali.org",
+      "mirrorDirectory": "/kali",
+      "minimumRamMB": 2048,
+      "minimumCpus": 1,
+      "minimumDiskGB": 25,
+      "preferredDiskGB": 60,
+      "approximateIsoGB": 4.0,
+      "estimatedMinutes": 60,
+      "packages": {
+        "light": ["kali-linux-core", "kali-desktop-xfce", "sudo", "openssh-client"],
+        "full": ["kali-linux-default", "sudo", "openssh-client"]
+      }
+    },
+    {
+      "id": "debian",
+      "name": "Debian 13",
+      "description": "Plain Debian stable with a desktop. Smaller and faster to install than Kali.",
+      "family": "debian-installer",
+      "vboxOsType": "Debian_64",
+      "isoBaseUrl": "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/",
+      "isoPattern": "debian-[0-9.]+-amd64-netinst\\.iso",
+      "checksumFile": "SHA256SUMS",
+      "fallbackBaseUrl": "",
+      "mirrorHostname": "deb.debian.org",
+      "mirrorDirectory": "/debian",
+      "minimumRamMB": 1536,
+      "minimumCpus": 1,
+      "minimumDiskGB": 15,
+      "preferredDiskGB": 40,
+      "approximateIsoGB": 0.7,
+      "estimatedMinutes": 30,
+      "packages": {
+        "light": ["task-xfce-desktop", "sudo", "openssh-client"],
+        "full": ["task-gnome-desktop", "sudo", "openssh-client"]
+      }
+    }
+  ]
+}
