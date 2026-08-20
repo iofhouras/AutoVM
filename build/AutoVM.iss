@@ -16,6 +16,7 @@
 #define AppName    "AutoVM"
 #define AppPublisher "AutoVM"
 #define AppUrl     "https://github.com/iofhouras/AutoVM"
+#define SiteUrl    "https://iofhouras.github.io/AutoVM/"
 #define AppExe     "AutoVM.exe"
 
 [Setup]
@@ -25,7 +26,7 @@ AppVersion={#AppVersion}
 AppVerName={#AppName} {#AppVersion}
 AppPublisher={#AppPublisher}
 AppPublisherURL={#AppUrl}
-AppSupportURL={#AppUrl}/issues
+AppSupportURL={#SiteUrl}
 AppUpdatesURL={#AppUrl}/releases
 DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
@@ -64,6 +65,7 @@ Source: "{#SourceDir}\docs\*";             DestDir: "{app}\docs"; Flags: ignorev
 [Icons]
 Name: "{group}\{#AppName}";            Filename: "{app}\{#AppExe}"; IconFilename: "{app}\AutoVM.ico"
 Name: "{group}\AutoVM build logs";     Filename: "{commonappdata}\AutoVM\logs"
+Name: "{group}\{#AppName} on the web"; Filename: "{#SiteUrl}"
 Name: "{group}\Uninstall {#AppName}";  Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#AppName}";      Filename: "{app}\{#AppExe}"; IconFilename: "{app}\AutoVM.ico"; Tasks: desktopicon
 

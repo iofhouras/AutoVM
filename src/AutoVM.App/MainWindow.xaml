@@ -1,8 +1,8 @@
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AutoVM" Height="660" Width="920"
+        Title="AutoVM" Height="720" Width="1020"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize"
+        MinHeight="700" MinWidth="1000"
         Background="#0B1020"
         FontFamily="Segoe UI" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
 
@@ -10,9 +10,11 @@
     <SolidColorBrush x:Key="Ink"      Color="#0B1020"/>
     <SolidColorBrush x:Key="Panel"    Color="#131B32"/>
     <SolidColorBrush x:Key="PanelAlt" Color="#18213C"/>
+    <SolidColorBrush x:Key="Field"    Color="#0E1730"/>
     <SolidColorBrush x:Key="Line"     Color="#26314F"/>
     <SolidColorBrush x:Key="Text"     Color="#E8EEF9"/>
     <SolidColorBrush x:Key="Muted"    Color="#93A3C0"/>
+    <SolidColorBrush x:Key="Faint"    Color="#6C7DA0"/>
     <SolidColorBrush x:Key="Accent"   Color="#3E8BFF"/>
     <SolidColorBrush x:Key="Ok"       Color="#3FD69B"/>
     <SolidColorBrush x:Key="Warn"     Color="#F0B84E"/>
@@ -20,26 +22,29 @@
 
     <Style x:Key="H1" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource Text}"/>
-      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="FontSize" Value="25"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
-      <Setter Property="Margin" Value="0,0,0,6"/>
     </Style>
     <Style x:Key="Deck" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource Muted}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="TextWrapping" Value="Wrap"/>
-      <Setter Property="Margin" Value="0,0,0,18"/>
+      <Setter Property="Margin" Value="0,6,0,0"/>
     </Style>
     <Style x:Key="Label" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource Muted}"/>
-      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontSize" Value="10.5"/>
       <Setter Property="FontFamily" Value="Consolas"/>
-      <Setter Property="Margin" Value="0,0,0,4"/>
+      <Setter Property="Margin" Value="0,0,0,5"/>
     </Style>
     <Style x:Key="Body" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource Text}"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style x:Key="Small" TargetType="TextBlock" BasedOn="{StaticResource Body}">
+      <Setter Property="FontSize" Value="11.5"/>
+      <Setter Property="Foreground" Value="{StaticResource Muted}"/>
     </Style>
 
     <Style TargetType="Button">
@@ -47,7 +52,7 @@
       <Setter Property="Foreground" Value="{StaticResource Text}"/>
       <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
       <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="Padding" Value="20,9"/>
+      <Setter Property="Padding" Value="18,9"/>
       <Setter Property="FontSize" Value="13"/>
       <Setter Property="Cursor" Value="Hand"/>
       <Setter Property="Template">
@@ -62,7 +67,7 @@
                 <Setter TargetName="b" Property="Background" Value="#243154"/>
               </Trigger>
               <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="b" Property="Opacity" Value="0.42"/>
+                <Setter TargetName="b" Property="Opacity" Value="0.4"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -72,12 +77,17 @@
 
     <Style x:Key="Primary" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
       <Setter Property="Background" Value="{StaticResource Accent}"/>
-      <Setter Property="BorderBrush" Value="#5AA0FF"/>
+      <Setter Property="BorderBrush" Value="#6FB0FF"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    <Style x:Key="Danger" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Background" Value="#3A2028"/>
+      <Setter Property="BorderBrush" Value="#5E2E38"/>
+      <Setter Property="Foreground" Value="#FFB3A7"/>
     </Style>
 
     <Style TargetType="TextBox">
-      <Setter Property="Background" Value="#0E1730"/>
+      <Setter Property="Background" Value="{StaticResource Field}"/>
       <Setter Property="Foreground" Value="{StaticResource Text}"/>
       <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
       <Setter Property="BorderThickness" Value="1"/>
@@ -86,7 +96,7 @@
       <Setter Property="CaretBrush" Value="{StaticResource Text}"/>
     </Style>
     <Style TargetType="PasswordBox">
-      <Setter Property="Background" Value="#0E1730"/>
+      <Setter Property="Background" Value="{StaticResource Field}"/>
       <Setter Property="Foreground" Value="{StaticResource Text}"/>
       <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
       <Setter Property="BorderThickness" Value="1"/>
@@ -96,335 +106,584 @@
     </Style>
     <Style TargetType="CheckBox">
       <Setter Property="Foreground" Value="{StaticResource Text}"/>
-      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="FontSize" Value="12.5"/>
     </Style>
-    <Style TargetType="RadioButton">
-      <Setter Property="Foreground" Value="{StaticResource Text}"/>
+    <Style TargetType="ComboBox">
+      <Setter Property="Background" Value="{StaticResource Field}"/>
+      <Setter Property="Foreground" Value="#101828"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
       <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Padding" Value="8,6"/>
+    </Style>
+    <Style TargetType="ListBox">
+      <Setter Property="Background" Value="{StaticResource Field}"/>
+      <Setter Property="Foreground" Value="{StaticResource Text}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+      <Setter Property="FontSize" Value="12.5"/>
+    </Style>
+    <Style TargetType="TabItem">
+      <Setter Property="Foreground" Value="{StaticResource Muted}"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TabItem">
+            <Border x:Name="tb" Background="Transparent" BorderThickness="0,0,0,2" BorderBrush="Transparent" Padding="14,9">
+              <ContentPresenter ContentSource="Header"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="tb" Property="BorderBrush" Value="#3E8BFF"/>
+                <Setter Property="Foreground" Value="#E8EEF9"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+              </Trigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="#E8EEF9"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
     </Style>
   </Window.Resources>
 
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="228"/>
+      <ColumnDefinition Width="236"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <!-- ================= SIDEBAR ================= -->
+    <!-- ===================== SIDEBAR ===================== -->
     <Border Grid.Column="0" Background="#080D1B">
-      <StackPanel Margin="24,28">
-        <TextBlock Text="AutoVM" Foreground="{StaticResource Text}" FontSize="21" FontWeight="Bold"/>
-        <TextBlock Text="virtual machines, set up for you" Foreground="{StaticResource Muted}" FontSize="11"
-                   TextWrapping="Wrap" Margin="0,2,0,26"/>
+      <Grid Margin="22,26">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock x:Name="StepWelcome" Text="1   Welcome"        Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,7" FontFamily="Consolas"/>
-        <TextBlock x:Name="StepDevice"  Text="2   This device"    Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,7" FontFamily="Consolas"/>
-        <TextBlock x:Name="StepAccount" Text="3   Your account"   Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,7" FontFamily="Consolas"/>
-        <TextBlock x:Name="StepReview"  Text="4   Review"         Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,7" FontFamily="Consolas"/>
-        <TextBlock x:Name="StepBuild"   Text="5   Building"       Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,7" FontFamily="Consolas"/>
-        <TextBlock x:Name="StepDone"    Text="6   Ready"          Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,7" FontFamily="Consolas"/>
+        <StackPanel Grid.Row="0">
+          <TextBlock Text="AutoVM" Foreground="{StaticResource Text}" FontSize="22" FontWeight="Bold"/>
+          <TextBlock Text="virtual machines, set up for you" Foreground="{StaticResource Faint}"
+                     FontSize="11" TextWrapping="Wrap" Margin="0,2,0,24"/>
 
-        <Border Height="1" Background="{StaticResource Line}" Margin="0,26,0,14"/>
-        <TextBlock x:Name="SidebarNote" Foreground="#6C7DA0" FontSize="10.5" TextWrapping="Wrap"
-                   Text="AutoVM leaves your existing machines and your security settings alone unless you tell it otherwise."/>
-      </StackPanel>
-    </Border>
+          <Button x:Name="NavCreate" Content="＋   Create a machine" HorizontalContentAlignment="Left"
+                  Padding="12,10" Margin="0,0,0,8"/>
+          <Button x:Name="NavManage" Content="▤   My machines" HorizontalContentAlignment="Left"
+                  Padding="12,10"/>
+        </StackPanel>
 
-    <!-- ================= CONTENT ================= -->
-    <Grid Grid.Column="1" Margin="34,30,34,0">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="Auto"/>
-      </Grid.RowDefinitions>
-
-      <Grid Grid.Row="0">
-
-        <!-- ========== 1 WELCOME ========== -->
-        <StackPanel x:Name="PageWelcome" Visibility="Visible">
-          <TextBlock Style="{StaticResource H1}" Text="Set up a Linux virtual machine"/>
-          <TextBlock Style="{StaticResource Deck}"
-                     Text="AutoVM looks at this computer, works out a machine that will run well on it, downloads a verified system image, and installs it without you having to answer installer questions. You choose the login and password; everything else is decided for you."/>
-          <Border Background="{StaticResource Panel}" CornerRadius="8" Padding="20" BorderBrush="{StaticResource Line}" BorderThickness="1">
+        <StackPanel Grid.Row="1" Margin="0,26,0,0">
+          <TextBlock x:Name="SideStatusLabel" Style="{StaticResource Label}" Text="STATUS"/>
+          <Border Background="#101830" CornerRadius="7" Padding="12,10" BorderBrush="{StaticResource Line}" BorderThickness="1">
             <StackPanel>
-              <TextBlock Style="{StaticResource Body}" Margin="0,0,0,10" Text="What happens next"/>
-              <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,0,0,5"
-                         Text="1.  AutoVM checks that this computer can run a virtual machine at all."/>
-              <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,0,0,5"
-                         Text="2.  You pick the system and type the login and password you want inside it."/>
-              <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,0,0,5"
-                         Text="3.  You see exactly what will be created before anything is installed."/>
-              <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource Muted}" FontSize="12.5"
-                         Text="4.  AutoVM builds it and puts a control panel on your desktop. Expect 30 to 90 minutes."/>
+              <TextBlock x:Name="SideState" Style="{StaticResource Body}" FontSize="12.5" Text="No machine yet"/>
+              <TextBlock x:Name="SideDetail" Style="{StaticResource Small}" FontSize="10.5" Margin="0,4,0,0" Text=""/>
             </StackPanel>
-          </Border>
-          <Border Background="#1B2038" CornerRadius="8" Padding="16,13" BorderBrush="#3A3050" BorderThickness="1" Margin="0,16,0,0">
-            <TextBlock Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Muted}"
-                       Text="AutoVM needs administrator rights to install the virtualization software, and it downloads several gigabytes. It will not change your firewall, your Windows security settings, or any virtual machine you already have."/>
           </Border>
         </StackPanel>
 
-        <!-- ========== 2 DEVICE ========== -->
-        <Grid x:Name="PageDevice" Visibility="Collapsed">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <StackPanel Grid.Row="0">
-            <TextBlock Style="{StaticResource H1}" Text="This device"/>
-            <TextBlock Style="{StaticResource Deck}" x:Name="DeviceDeck"
-                       Text="Checking what this computer can do."/>
-          </StackPanel>
-          <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="300"/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" Background="{StaticResource Panel}" CornerRadius="8" Padding="4"
-                    BorderBrush="{StaticResource Line}" BorderThickness="1" Margin="0,0,14,20">
-              <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl x:Name="GateList" Margin="14,12">
+        <StackPanel Grid.Row="2">
+          <Border Height="1" Background="{StaticResource Line}" Margin="0,0,0,12"/>
+          <TextBlock x:Name="SidebarNote" Foreground="{StaticResource Faint}" FontSize="10.5" TextWrapping="Wrap"
+                     Text="AutoVM leaves your other machines and your Windows security settings alone."/>
+          <TextBlock x:Name="VersionLabel" Foreground="#4E5D7C" FontSize="10" Margin="0,10,0,0" Text="v1.1.0"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- ===================== CONTENT ===================== -->
+    <Grid Grid.Column="1" Margin="30,26,30,24">
+
+      <!-- ================ CREATE ================ -->
+      <Grid x:Name="PageCreate" Visibility="Visible">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+          <TextBlock Style="{StaticResource H1}" Text="Create a virtual machine"/>
+          <TextBlock Style="{StaticResource Deck}" Margin="0,6,0,18"
+                     Text="Pick a system, choose the login you want inside it, and press the button. AutoVM handles the rest — the hypervisor, the download, the installation and the setup."/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,10,0">
+          <StackPanel>
+
+            <TextBlock Style="{StaticResource Label}" Text="CHOOSE A SYSTEM"/>
+            <Grid Margin="0,0,0,20">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+
+              <Border x:Name="CardKali" Grid.Column="0" Background="#16233F" CornerRadius="10" Padding="18,16"
+                      BorderBrush="{StaticResource Accent}" BorderThickness="2" Cursor="Hand">
+                <StackPanel>
+                  <StackPanel Orientation="Horizontal">
+                    <Ellipse x:Name="DotKali" Width="12" Height="12" Fill="{StaticResource Accent}" VerticalAlignment="Center"/>
+                    <TextBlock Text="Kali Linux Virtual Machine" Foreground="{StaticResource Text}" FontSize="15"
+                               FontWeight="SemiBold" Margin="10,0,0,0"/>
+                  </StackPanel>
+                  <TextBlock Style="{StaticResource Small}" Margin="22,6,0,0"
+                             Text="Security distribution with the Xfce desktop. The usual choice."/>
+                  <TextBlock x:Name="KaliSpec" Style="{StaticResource Small}" FontFamily="Consolas" FontSize="10.5"
+                             Margin="22,6,0,0" Foreground="{StaticResource Faint}" Text="about 60 minutes · ~4 GB download"/>
+                </StackPanel>
+              </Border>
+
+              <Border x:Name="CardDebian" Grid.Column="2" Background="{StaticResource Panel}" CornerRadius="10" Padding="18,16"
+                      BorderBrush="{StaticResource Line}" BorderThickness="2" Cursor="Hand">
+                <StackPanel>
+                  <StackPanel Orientation="Horizontal">
+                    <Ellipse x:Name="DotDebian" Width="12" Height="12" Fill="#33405E" VerticalAlignment="Center"/>
+                    <TextBlock Text="Debian Virtual Machine" Foreground="{StaticResource Text}" FontSize="15"
+                               FontWeight="SemiBold" Margin="10,0,0,0"/>
+                  </StackPanel>
+                  <TextBlock Style="{StaticResource Small}" Margin="22,6,0,0"
+                             Text="Plain Debian with a desktop. Smaller and quicker to install."/>
+                  <TextBlock x:Name="DebianSpec" Style="{StaticResource Small}" FontFamily="Consolas" FontSize="10.5"
+                             Margin="22,6,0,0" Foreground="{StaticResource Faint}" Text="about 30 minutes · ~0.7 GB download"/>
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <TextBlock Style="{StaticResource Label}" Text="YOUR LOGIN INSIDE THE MACHINE"/>
+            <Grid Margin="0,0,0,4">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0">
+                <TextBlock Style="{StaticResource Small}" Margin="0,0,0,4" Text="Username"/>
+                <TextBox x:Name="TxtUser" MaxLength="32"/>
+                <TextBlock x:Name="UserHint" Style="{StaticResource Small}" FontSize="11" Margin="0,5,0,0"
+                           Text="Letters, digits, hyphen and underscore."/>
+              </StackPanel>
+              <StackPanel Grid.Column="2">
+                <TextBlock Style="{StaticResource Small}" Margin="0,0,0,4" Text="Machine name (optional)"/>
+                <TextBox x:Name="TxtVmName" MaxLength="48"/>
+                <TextBlock Style="{StaticResource Small}" FontSize="11" Margin="0,5,0,0"
+                           Text="How it is listed in VirtualBox. Leave blank for a sensible default."/>
+              </StackPanel>
+            </Grid>
+
+            <Grid Margin="0,14,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0">
+                <TextBlock Style="{StaticResource Small}" Margin="0,0,0,4" Text="Password"/>
+                <PasswordBox x:Name="TxtPass"/>
+                <Border Height="5" Background="{StaticResource Field}" CornerRadius="3" Margin="0,7,0,0">
+                  <Border x:Name="StrengthBar" HorizontalAlignment="Left" Width="0" Background="{StaticResource Bad}" CornerRadius="3"/>
+                </Border>
+                <TextBlock x:Name="PassHint" Style="{StaticResource Small}" FontSize="11" Margin="0,5,0,0" Text=""/>
+              </StackPanel>
+              <StackPanel Grid.Column="2">
+                <TextBlock Style="{StaticResource Small}" Margin="0,0,0,4" Text="Confirm password"/>
+                <PasswordBox x:Name="TxtPass2"/>
+                <TextBlock x:Name="Pass2Hint" Style="{StaticResource Small}" FontSize="11" Margin="0,12,0,0"
+                           Foreground="{StaticResource Bad}" Text=""/>
+              </StackPanel>
+            </Grid>
+
+            <Border Background="#1B2038" CornerRadius="8" Padding="14,11" BorderBrush="#3A3050"
+                    BorderThickness="1" Margin="0,18,0,0">
+              <TextBlock Style="{StaticResource Small}" FontSize="12"
+                         Text="Linux logins are case-sensitive — you will sign in with exactly what you type here. AutoVM never stores your password; it goes straight into the installation and is then erased."/>
+            </Border>
+
+            <Expander x:Name="DeviceDetails" Header="What AutoVM found on this device"
+                      Foreground="{StaticResource Muted}" FontSize="12.5" Margin="0,16,0,0">
+              <Border Background="{StaticResource Panel}" CornerRadius="8" Padding="6" BorderBrush="{StaticResource Line}"
+                      BorderThickness="1" Margin="0,10,0,0">
+                <ItemsControl x:Name="GateList" Margin="12,10">
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                      <Grid Margin="0,0,0,11">
+                      <Grid Margin="0,0,0,10">
                         <Grid.ColumnDefinitions>
                           <ColumnDefinition Width="22"/>
                           <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Mark}" Foreground="{Binding Colour}"
-                                   FontSize="14" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="0" Text="{Binding Mark}" Foreground="{Binding Colour}" FontSize="13" FontWeight="Bold"/>
                         <StackPanel Grid.Column="1">
-                          <TextBlock Text="{Binding Title}" Foreground="#E8EEF9" FontSize="13"/>
-                          <TextBlock Text="{Binding Detail}" Foreground="#7E8DAB" FontSize="11.5"
-                                     FontFamily="Consolas" TextWrapping="Wrap"/>
-                          <TextBlock Text="{Binding Advice}" Foreground="{Binding Colour}" FontSize="12"
+                          <TextBlock Text="{Binding Title}" Foreground="#E8EEF9" FontSize="12.5"/>
+                          <TextBlock Text="{Binding Detail}" Foreground="#7E8DAB" FontSize="11" FontFamily="Consolas" TextWrapping="Wrap"/>
+                          <TextBlock Text="{Binding Advice}" Foreground="{Binding Colour}" FontSize="11.5"
                                      TextWrapping="Wrap" Margin="0,3,0,0" Visibility="{Binding AdviceVisible}"/>
                         </StackPanel>
                       </Grid>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
                 </ItemsControl>
-              </ScrollViewer>
-            </Border>
-            <StackPanel Grid.Column="1">
-              <Border Background="{StaticResource Panel}" CornerRadius="8" Padding="16"
-                      BorderBrush="{StaticResource Line}" BorderThickness="1">
-                <StackPanel>
-                  <TextBlock Style="{StaticResource Label}" Text="DEVICE"/>
-                  <TextBlock x:Name="DeviceModel" Style="{StaticResource Body}" Margin="0,0,0,12" Text="-"/>
-                  <TextBlock Style="{StaticResource Label}" Text="MEMORY"/>
-                  <TextBlock x:Name="DeviceRam" Style="{StaticResource Body}" Margin="0,0,0,12" Text="-"/>
-                  <TextBlock Style="{StaticResource Label}" Text="PROCESSOR"/>
-                  <TextBlock x:Name="DeviceCpu" Style="{StaticResource Body}" FontSize="12" Margin="0,0,0,12" Text="-"/>
-                  <TextBlock Style="{StaticResource Label}" Text="FREE SPACE"/>
-                  <TextBlock x:Name="DeviceDisk" Style="{StaticResource Body}" Text="-"/>
-                </StackPanel>
               </Border>
-              <Button x:Name="BtnRescan" Content="Check again" Margin="0,14,0,0" HorizontalAlignment="Stretch"/>
-            </StackPanel>
-          </Grid>
-        </Grid>
+            </Expander>
 
-        <!-- ========== 3 ACCOUNT ========== -->
-        <StackPanel x:Name="PageAccount" Visibility="Collapsed">
-          <TextBlock Style="{StaticResource H1}" Text="Your account inside the machine"/>
-          <TextBlock Style="{StaticResource Deck}"
-                     Text="This is the login you will use every time you start the virtual machine. AutoVM does not store the password anywhere - it goes straight into the installation and is then erased."/>
-
-          <TextBlock Style="{StaticResource Label}" Text="SYSTEM"/>
-          <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
-            <RadioButton x:Name="GuestKali" Content="Kali Linux" GroupName="Guest" IsChecked="True" Margin="0,0,26,0"/>
-            <RadioButton x:Name="GuestDebian" Content="Debian" GroupName="Guest"/>
           </StackPanel>
-          <TextBlock x:Name="GuestBlurb" Style="{StaticResource Body}" Foreground="{StaticResource Muted}"
-                     FontSize="12" Margin="0,-12,0,18" Text=""/>
+        </ScrollViewer>
 
+        <Border Grid.Row="2" Background="{StaticResource Panel}" CornerRadius="10" Padding="18,14"
+                BorderBrush="{StaticResource Line}" BorderThickness="1" Margin="0,18,0,0">
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="26"/>
-              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-              <TextBlock Style="{StaticResource Label}" Text="LOGIN NAME"/>
-              <TextBox x:Name="TxtUser" MaxLength="32"/>
-              <TextBlock x:Name="UserHint" Style="{StaticResource Body}" FontSize="11.5" Margin="0,6,0,0"
-                         Foreground="{StaticResource Muted}" Text="Letters, digits, hyphen and underscore."/>
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+              <TextBlock x:Name="PlanLine" Style="{StaticResource Body}" FontSize="13" Text="Checking this device…"/>
+              <TextBlock x:Name="PlanSub" Style="{StaticResource Small}" FontSize="11" Margin="0,4,0,0" Text=""/>
             </StackPanel>
-            <StackPanel Grid.Column="2">
-              <TextBlock Style="{StaticResource Label}" Text="MACHINE NAME (OPTIONAL)"/>
-              <TextBox x:Name="TxtVmName" MaxLength="48"/>
-              <TextBlock Style="{StaticResource Body}" FontSize="11.5" Margin="0,6,0,0"
-                         Foreground="{StaticResource Muted}" Text="How the machine is listed in VirtualBox."/>
-            </StackPanel>
+            <Button x:Name="BtnCreate" Grid.Column="1" Style="{StaticResource Primary}" Content="Create VM Now!"
+                    FontSize="15.5" Padding="34,15" IsEnabled="False"/>
           </Grid>
+        </Border>
+      </Grid>
 
-          <Grid Margin="0,18,0,0">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="26"/>
-              <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-              <TextBlock Style="{StaticResource Label}" Text="PASSWORD"/>
-              <PasswordBox x:Name="TxtPass"/>
-              <Border Height="5" Background="#0E1730" CornerRadius="3" Margin="0,8,0,0">
-                <Border x:Name="StrengthBar" HorizontalAlignment="Left" Width="0" Background="{StaticResource Bad}" CornerRadius="3"/>
-              </Border>
-              <TextBlock x:Name="PassHint" Style="{StaticResource Body}" FontSize="11.5" Margin="0,6,0,0"
-                         Foreground="{StaticResource Muted}" Text=""/>
-            </StackPanel>
-            <StackPanel Grid.Column="2">
-              <TextBlock Style="{StaticResource Label}" Text="CONFIRM PASSWORD"/>
-              <PasswordBox x:Name="TxtPass2"/>
-              <TextBlock x:Name="Pass2Hint" Style="{StaticResource Body}" FontSize="11.5" Margin="0,6,0,0"
-                         Foreground="{StaticResource Bad}" Text=""/>
-            </StackPanel>
-          </Grid>
-
-          <Border Background="#1B2038" CornerRadius="8" Padding="16,13" BorderBrush="#3A3050" BorderThickness="1" Margin="0,20,0,0">
-            <TextBlock x:Name="CaseNote" Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Muted}"
-                       Text="Linux logins are case-sensitive. Whatever you type here is exactly what you will type to sign in."/>
-          </Border>
+      <!-- ================ BUILDING ================ -->
+      <Grid x:Name="PageBuilding" Visibility="Collapsed">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+          <TextBlock Style="{StaticResource H1}" Text="Building your machine"/>
+          <TextBlock Style="{StaticResource Deck}" Margin="0,6,0,18"
+                     Text="You can leave this running and use the computer for other things. Keep it awake and plugged in."/>
         </StackPanel>
-
-        <!-- ========== 4 REVIEW ========== -->
-        <Grid x:Name="PageReview" Visibility="Collapsed">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <StackPanel Grid.Row="0">
-            <TextBlock Style="{StaticResource H1}" Text="Before anything is installed"/>
-            <TextBlock Style="{StaticResource Deck}" Text="This is what AutoVM will create on this device."/>
-          </StackPanel>
-          <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,20">
-            <StackPanel>
-              <Border Background="{StaticResource Panel}" CornerRadius="8" Padding="20"
-                      BorderBrush="{StaticResource Line}" BorderThickness="1">
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
-                  <StackPanel Grid.Column="0">
-                    <TextBlock Style="{StaticResource Label}" Text="SYSTEM"/>
-                    <TextBlock x:Name="RvGuest" Style="{StaticResource Body}" Margin="0,0,0,14" Text="-"/>
-                    <TextBlock Style="{StaticResource Label}" Text="MEMORY GIVEN TO THE MACHINE"/>
-                    <TextBlock x:Name="RvRam" Style="{StaticResource Body}" Margin="0,0,0,14" Text="-"/>
-                    <TextBlock Style="{StaticResource Label}" Text="PROCESSORS"/>
-                    <TextBlock x:Name="RvCpu" Style="{StaticResource Body}" Text="-"/>
-                  </StackPanel>
-                  <StackPanel Grid.Column="1">
-                    <TextBlock Style="{StaticResource Label}" Text="DISK"/>
-                    <TextBlock x:Name="RvDisk" Style="{StaticResource Body}" Margin="0,0,0,14" Text="-"/>
-                    <TextBlock Style="{StaticResource Label}" Text="SIGN IN AS"/>
-                    <TextBlock x:Name="RvUser" Style="{StaticResource Body}" Margin="0,0,0,14" FontFamily="Consolas" Text="-"/>
-                    <TextBlock Style="{StaticResource Label}" Text="ESTIMATED TIME"/>
-                    <TextBlock x:Name="RvTime" Style="{StaticResource Body}" Text="-"/>
-                  </StackPanel>
-                </Grid>
-              </Border>
-
-              <ItemsControl x:Name="WarningList" Margin="0,14,0,0">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate>
-                    <Border Background="#241E12" CornerRadius="7" Padding="14,11" BorderBrush="#4B3B1B"
-                            BorderThickness="1" Margin="0,0,0,8">
-                      <TextBlock Text="{Binding}" Foreground="#F0B84E" FontSize="12.5" TextWrapping="Wrap"/>
-                    </Border>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-
-              <Expander x:Name="AdvancedPanel" Header="Remove virtual machines already on this device"
-                        Foreground="{StaticResource Muted}" Margin="0,14,0,0" FontSize="12.5">
-                <Border Background="#20141A" CornerRadius="7" Padding="16" BorderBrush="#5A2B33" BorderThickness="1" Margin="0,10,0,0">
-                  <StackPanel>
-                    <TextBlock Style="{StaticResource Body}" FontSize="12.5" Foreground="#FF9C93" TextWrapping="Wrap"
-                               Text="AutoVM does not need to remove anything to build your machine. If you turn this on, it will delete the virtual machines and disk images it lists below. This cannot be undone."/>
-                    <CheckBox x:Name="ChkTeardown" Margin="0,12,0,0" Content="Remove the machines listed below"/>
-                    <ListBox x:Name="TeardownList" Height="96" Margin="0,10,0,0" Background="#0E1730"
-                             Foreground="#E8EEF9" BorderBrush="{StaticResource Line}" FontFamily="Consolas" FontSize="11.5"/>
-                    <TextBlock Style="{StaticResource Label}" Margin="0,12,0,4" Text="TYPE DESTROY TO CONFIRM"/>
-                    <TextBox x:Name="TxtDestroy" Width="220" HorizontalAlignment="Left"/>
-                  </StackPanel>
-                </Border>
-              </Expander>
-            </StackPanel>
+        <StackPanel Grid.Row="1" Margin="0,0,0,16">
+          <Border Height="9" Background="{StaticResource Field}" CornerRadius="5">
+            <Border x:Name="ProgressFill" HorizontalAlignment="Left" Width="0" Background="{StaticResource Accent}" CornerRadius="5"/>
+          </Border>
+          <Grid Margin="0,10,0,0">
+            <TextBlock x:Name="BuildStatus" Style="{StaticResource Body}" Text="Starting…"/>
+            <TextBlock x:Name="BuildClock" Style="{StaticResource Small}" FontFamily="Consolas"
+                       HorizontalAlignment="Right" Text="00:00:00"/>
+          </Grid>
+        </StackPanel>
+        <Border Grid.Row="2" Background="#070C18" CornerRadius="8" BorderBrush="{StaticResource Line}" BorderThickness="1">
+          <ScrollViewer x:Name="LogScroller" VerticalScrollBarVisibility="Auto" Padding="14,12">
+            <TextBox x:Name="LogBox" Background="Transparent" BorderThickness="0" Foreground="#B9C7DE"
+                     FontFamily="Consolas" FontSize="11.5" IsReadOnly="True" TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"/>
           </ScrollViewer>
-        </Grid>
-
-        <!-- ========== 5 BUILD ========== -->
-        <Grid x:Name="PageBuild" Visibility="Collapsed">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <StackPanel Grid.Row="0">
-            <TextBlock Style="{StaticResource H1}" Text="Building your machine"/>
-            <TextBlock Style="{StaticResource Deck}" x:Name="BuildDeck"
-                       Text="You can leave this running. Keep the computer awake and plugged in."/>
-          </StackPanel>
-          <StackPanel Grid.Row="1" Margin="0,0,0,18">
-            <Border Height="8" Background="#0E1730" CornerRadius="4">
-              <Border x:Name="ProgressFill" HorizontalAlignment="Left" Width="0" Background="{StaticResource Accent}" CornerRadius="4"/>
-            </Border>
-            <Grid Margin="0,10,0,0">
-              <TextBlock x:Name="BuildStatus" Style="{StaticResource Body}" FontSize="13" Text="Starting..."/>
-              <TextBlock x:Name="BuildClock" Style="{StaticResource Body}" FontSize="12" FontFamily="Consolas"
-                         Foreground="{StaticResource Muted}" HorizontalAlignment="Right" Text="00:00:00"/>
-            </Grid>
-          </StackPanel>
-          <Border Grid.Row="2" Background="#070C18" CornerRadius="8" BorderBrush="{StaticResource Line}"
-                  BorderThickness="1" Margin="0,0,0,20">
-            <ScrollViewer x:Name="LogScroller" VerticalScrollBarVisibility="Auto" Padding="14,12">
-              <TextBox x:Name="LogBox" Background="Transparent" BorderThickness="0" Foreground="#B9C7DE"
-                       FontFamily="Consolas" FontSize="11.5" IsReadOnly="True" TextWrapping="Wrap"
-                       VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"/>
-            </ScrollViewer>
-          </Border>
-        </Grid>
-
-        <!-- ========== 6 DONE ========== -->
-        <Grid x:Name="PageDone" Visibility="Collapsed">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
-          <StackPanel Grid.Row="0">
-            <TextBlock x:Name="DoneTitle" Style="{StaticResource H1}" Text="Your machine is ready"/>
-            <TextBlock x:Name="DoneDeck" Style="{StaticResource Deck}" Text=""/>
-          </StackPanel>
-          <Grid Grid.Row="1" Margin="0,0,0,20">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="264"/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" Background="{StaticResource Panel}" CornerRadius="8" Padding="20"
-                    BorderBrush="{StaticResource Line}" BorderThickness="1" Margin="0,0,14,0">
-              <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <TextBox x:Name="DoneNote" Background="Transparent" BorderThickness="0" Foreground="#D6E1F2"
-                         FontFamily="Consolas" FontSize="12" IsReadOnly="True" TextWrapping="Wrap"/>
-              </ScrollViewer>
-            </Border>
-            <StackPanel Grid.Column="1">
-              <Button x:Name="BtnOpenPanel" Style="{StaticResource Primary}" Content="Open the control panel" HorizontalAlignment="Stretch"/>
-              <Button x:Name="BtnOpenLogs" Content="Show the build log" Margin="0,10,0,0" HorizontalAlignment="Stretch"/>
-              <Button x:Name="BtnCopyNote" Content="Copy these notes" Margin="0,10,0,0" HorizontalAlignment="Stretch"/>
-            </StackPanel>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <!-- ================= FOOTER ================= -->
-      <Grid Grid.Row="1" Margin="0,0,0,24">
-        <TextBlock x:Name="FooterNote" Foreground="#6C7DA0" FontSize="11.5" VerticalAlignment="Center" Text=""/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button x:Name="BtnBack" Content="Back" Margin="0,0,10,0" Width="112"/>
-          <Button x:Name="BtnNext" Content="Continue" Style="{StaticResource Primary}" Width="168"/>
+        </Border>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+          <Button x:Name="BtnCancelBuild" Style="{StaticResource Danger}" Content="Stop the build"/>
         </StackPanel>
       </Grid>
+
+      <!-- ================ READY ================ -->
+      <Grid x:Name="PageReady" Visibility="Collapsed">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+          <TextBlock x:Name="DoneTitle" Style="{StaticResource H1}" Text="Your machine is ready"/>
+          <TextBlock x:Name="DoneDeck" Style="{StaticResource Deck}" Margin="0,6,0,18" Text=""/>
+        </StackPanel>
+        <Border Grid.Row="1" Background="{StaticResource Panel}" CornerRadius="10" Padding="20"
+                BorderBrush="{StaticResource Line}" BorderThickness="1">
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <TextBox x:Name="DoneNote" Background="Transparent" BorderThickness="0" Foreground="#D6E1F2"
+                     FontFamily="Consolas" FontSize="12" IsReadOnly="True" TextWrapping="Wrap"/>
+          </ScrollViewer>
+        </Border>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+          <Button x:Name="BtnCopyNote" Content="Copy these notes" Margin="0,0,10,0"/>
+          <Button x:Name="BtnOpenLogs" Content="Show the log" Margin="0,0,10,0"/>
+          <Button x:Name="BtnGoManage" Style="{StaticResource Primary}" Content="Manage my machine" Padding="26,12"/>
+        </StackPanel>
+      </Grid>
+
+      <!-- ================ MANAGE ================ -->
+      <Grid x:Name="PageManage" Visibility="Collapsed">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+          <StackPanel>
+            <TextBlock Style="{StaticResource H1}" Text="My machines"/>
+            <TextBlock Style="{StaticResource Deck}" Margin="0,6,0,0"
+                       Text="Start, adjust, snapshot and share files with the machines AutoVM built."/>
+          </StackPanel>
+          <Button x:Name="BtnRefresh" Content="Refresh" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="14,7"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="242"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <Border Grid.Column="0" Background="{StaticResource Panel}" CornerRadius="10" BorderBrush="{StaticResource Line}"
+                  BorderThickness="1" Padding="6">
+            <ListBox x:Name="MachineList" Background="Transparent" BorderThickness="0">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <Grid Margin="4,8">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="18"/>
+                      <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse Grid.Column="0" Width="9" Height="9" Fill="{Binding StateColour}" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1">
+                      <TextBlock Text="{Binding Name}" Foreground="#E8EEF9" FontSize="13" FontWeight="SemiBold"/>
+                      <TextBlock Text="{Binding Summary}" Foreground="#7E8DAB" FontSize="11" FontFamily="Consolas"/>
+                    </StackPanel>
+                  </Grid>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </Border>
+
+          <TabControl x:Name="ManageTabs" Grid.Column="2" Background="Transparent" BorderThickness="0">
+
+            <TabItem Header="Overview">
+              <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,14,0,0">
+                <StackPanel>
+                  <Border Background="{StaticResource Panel}" CornerRadius="10" Padding="20"
+                          BorderBrush="{StaticResource Line}" BorderThickness="1">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <StackPanel Grid.Column="0">
+                        <TextBlock Style="{StaticResource Label}" Text="STATE"/>
+                        <TextBlock x:Name="OvState" Style="{StaticResource Body}" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,14" Text="—"/>
+                        <TextBlock Style="{StaticResource Label}" Text="SIGN IN AS"/>
+                        <TextBlock x:Name="OvLogin" Style="{StaticResource Body}" FontFamily="Consolas" Margin="0,0,0,14" Text="—"/>
+                        <TextBlock Style="{StaticResource Label}" Text="SYSTEM"/>
+                        <TextBlock x:Name="OvGuest" Style="{StaticResource Body}" Text="—"/>
+                      </StackPanel>
+                      <StackPanel Grid.Column="1">
+                        <TextBlock Style="{StaticResource Label}" Text="HARDWARE"/>
+                        <TextBlock x:Name="OvHardware" Style="{StaticResource Body}" Margin="0,0,0,14" Text="—"/>
+                        <TextBlock Style="{StaticResource Label}" Text="DISK IN USE"/>
+                        <TextBlock x:Name="OvDisk" Style="{StaticResource Body}" Margin="0,0,0,14" Text="—"/>
+                        <TextBlock Style="{StaticResource Label}" Text="ADDRESS ON ITS NETWORK"/>
+                        <TextBlock x:Name="OvIp" Style="{StaticResource Body}" FontFamily="Consolas" Text="—"/>
+                      </StackPanel>
+                    </Grid>
+                  </Border>
+
+                  <Border Background="{StaticResource Panel}" CornerRadius="10" Padding="18" Margin="0,14,0,0"
+                          BorderBrush="{StaticResource Line}" BorderThickness="1">
+                    <StackPanel>
+                      <TextBlock Style="{StaticResource Label}" Text="POWER"/>
+                      <WrapPanel>
+                        <Button x:Name="BtnStart" Style="{StaticResource Primary}" Content="Start the machine" Margin="0,0,10,10"/>
+                        <Button x:Name="BtnStartHeadless" Content="Start in the background" Margin="0,0,10,10"/>
+                        <Button x:Name="BtnShutdown" Content="Shut down" Margin="0,0,10,10"/>
+                        <Button x:Name="BtnSaveState" Content="Save state" Margin="0,0,10,10"/>
+                        <Button x:Name="BtnPowerOff" Style="{StaticResource Danger}" Content="Force off" Margin="0,0,10,10"/>
+                        <Button x:Name="BtnVBoxGui" Content="Open VirtualBox Manager" Margin="0,0,0,10"/>
+                      </WrapPanel>
+                      <TextBlock Style="{StaticResource Small}" FontSize="11"
+                                 Text="Shut down asks the guest to close cleanly. Save state freezes it exactly as it is. Force off is the equivalent of pulling the plug."/>
+                    </StackPanel>
+                  </Border>
+                </StackPanel>
+              </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Settings">
+              <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,14,0,0">
+                <StackPanel>
+                  <Border x:Name="SettingsLocked" Background="#241E12" CornerRadius="8" Padding="14,11"
+                          BorderBrush="#4B3B1B" BorderThickness="1" Margin="0,0,0,14" Visibility="Collapsed">
+                    <TextBlock x:Name="SettingsLockedText" Style="{StaticResource Body}" FontSize="12.5" Foreground="{StaticResource Warn}"
+                               Text="Shut the machine down to change its hardware."/>
+                  </Border>
+
+                  <Border Background="{StaticResource Panel}" CornerRadius="10" Padding="20"
+                          BorderBrush="{StaticResource Line}" BorderThickness="1">
+                    <StackPanel>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="16"/>
+                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="16"/>
+                          <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                          <TextBlock Style="{StaticResource Label}" Text="MEMORY (MB)"/>
+                          <TextBox x:Name="SetRam"/>
+                          <TextBlock x:Name="RamHint" Style="{StaticResource Small}" FontSize="11" Margin="0,5,0,0" Text=""/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                          <TextBlock Style="{StaticResource Label}" Text="PROCESSORS"/>
+                          <TextBox x:Name="SetCpus"/>
+                          <TextBlock x:Name="CpuHint" Style="{StaticResource Small}" FontSize="11" Margin="0,5,0,0" Text=""/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4">
+                          <TextBlock Style="{StaticResource Label}" Text="VIDEO MEMORY (MB)"/>
+                          <TextBox x:Name="SetVram"/>
+                          <TextBlock Style="{StaticResource Small}" FontSize="11" Margin="0,5,0,0" Text="16 – 256"/>
+                        </StackPanel>
+                      </Grid>
+
+                      <TextBlock Style="{StaticResource Label}" Margin="0,18,0,5" Text="SHARED CLIPBOARD"/>
+                      <ComboBox x:Name="SetClipboard" Width="260" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Both directions"/>
+                        <ComboBoxItem Content="Windows to the machine"/>
+                        <ComboBoxItem Content="The machine to Windows"/>
+                        <ComboBoxItem Content="Off"/>
+                      </ComboBox>
+                      <TextBlock Style="{StaticResource Small}" FontSize="11" Margin="0,6,0,0"
+                                 Text="The clipboard is a path between Windows and the machine. Turn it off if the machine will handle anything untrusted."/>
+
+                      <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Button x:Name="BtnApplySettings" Style="{StaticResource Primary}" Content="Apply changes"/>
+                        <TextBlock x:Name="SettingsMsg" Style="{StaticResource Small}" VerticalAlignment="Center" Margin="14,0,0,0" Text=""/>
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+
+                  <Border Background="{StaticResource Panel}" CornerRadius="10" Padding="18" Margin="0,14,0,0"
+                          BorderBrush="{StaticResource Line}" BorderThickness="1">
+                    <StackPanel>
+                      <TextBlock Style="{StaticResource Label}" Text="NETWORK"/>
+                      <TextBlock Style="{StaticResource Body}" FontSize="12.5"
+                                 Text="This machine reaches out through your connection, and nothing on your network can reach into it. AutoVM does not offer bridged networking or port forwarding, because that is what makes a simple guest password safe."/>
+                      <TextBlock Style="{StaticResource Small}" FontSize="11" Margin="0,8,0,0"
+                                 Text="If you need one of those, set it up in VirtualBox Manager — and change the guest password first."/>
+                    </StackPanel>
+                  </Border>
+                </StackPanel>
+              </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Restore points">
+              <Grid Margin="0,14,0,0">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Style="{StaticResource Small}" Margin="0,0,0,12"
+                           Text="A restore point is a snapshot of the whole machine. Restoring one throws away everything saved inside since it was taken."/>
+                <Border Grid.Row="1" Background="{StaticResource Panel}" CornerRadius="10" Padding="6"
+                        BorderBrush="{StaticResource Line}" BorderThickness="1">
+                  <ListBox x:Name="SnapshotList" Background="Transparent" BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                      <DataTemplate>
+                        <StackPanel Margin="6,7">
+                          <TextBlock Text="{Binding Name}" Foreground="#E8EEF9" FontSize="13"/>
+                          <TextBlock Text="{Binding Description}" Foreground="#7E8DAB" FontSize="11" TextWrapping="Wrap"/>
+                        </StackPanel>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                  </ListBox>
+                </Border>
+                <StackPanel Grid.Row="2" Margin="0,14,0,0">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="TxtSnapshotName" Grid.Column="0" Margin="0,0,10,0"/>
+                    <Button x:Name="BtnTakeSnapshot" Grid.Column="1" Style="{StaticResource Primary}" Content="Take a restore point"/>
+                  </Grid>
+                  <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="BtnRestoreSnapshot" Content="Restore the selected point" Margin="0,0,10,0"/>
+                    <Button x:Name="BtnDeleteSnapshot" Style="{StaticResource Danger}" Content="Delete the selected point"/>
+                  </StackPanel>
+                </StackPanel>
+              </Grid>
+            </TabItem>
+
+            <TabItem Header="Files &amp; data">
+              <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,14,0,0">
+                <StackPanel>
+                  <Border Background="{StaticResource Panel}" CornerRadius="10" Padding="18"
+                          BorderBrush="{StaticResource Line}" BorderThickness="1">
+                    <StackPanel>
+                      <TextBlock Style="{StaticResource Label}" Text="SHARED FOLDERS"/>
+                      <TextBlock Style="{StaticResource Small}" FontSize="11.5" Margin="0,0,0,10"
+                                 Text="A shared folder appears inside the machine, so you can move files in and out without a network."/>
+                      <ListBox x:Name="ShareList" Height="96" Margin="0,0,0,10"/>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="160"/>
+                          <ColumnDefinition Width="10"/>
+                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="10"/>
+                          <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="TxtShareName" Grid.Column="0"/>
+                        <TextBox x:Name="TxtSharePath" Grid.Column="2" IsReadOnly="True"/>
+                        <Button x:Name="BtnPickFolder" Grid.Column="4" Content="Choose a folder…"/>
+                      </Grid>
+                      <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <CheckBox x:Name="ChkShareReadOnly" Content="Read only" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                        <Button x:Name="BtnAddShare" Content="Share this folder" Margin="0,0,10,0"/>
+                        <Button x:Name="BtnRemoveShare" Style="{StaticResource Danger}" Content="Stop sharing the selected"/>
+                      </StackPanel>
+                      <TextBlock x:Name="ShareMsg" Style="{StaticResource Small}" FontSize="11" Margin="0,8,0,0" Text=""/>
+                    </StackPanel>
+                  </Border>
+
+                  <Border Background="{StaticResource Panel}" CornerRadius="10" Padding="18" Margin="0,14,0,0"
+                          BorderBrush="{StaticResource Line}" BorderThickness="1">
+                    <StackPanel>
+                      <TextBlock Style="{StaticResource Label}" Text="THE MACHINE'S FILES"/>
+                      <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <Button x:Name="BtnOpenVmFolder" Content="Open the machine's folder" Margin="0,0,10,0"/>
+                        <Button x:Name="BtnExport" Content="Export to a single file…"/>
+                      </StackPanel>
+                      <TextBlock Style="{StaticResource Small}" FontSize="11" Margin="0,8,0,0"
+                                 Text="Exporting writes the whole machine to one .ova file you can keep as a backup or move to another computer. It takes a while and needs the machine shut down."/>
+                    </StackPanel>
+                  </Border>
+
+                  <Border Background="#20141A" CornerRadius="10" Padding="18" Margin="0,14,0,0"
+                          BorderBrush="#5A2B33" BorderThickness="1">
+                    <StackPanel>
+                      <TextBlock Style="{StaticResource Label}" Foreground="{StaticResource Bad}" Text="DELETE THIS MACHINE"/>
+                      <TextBlock Style="{StaticResource Body}" FontSize="12.5" Foreground="#FF9C93"
+                                 Text="This removes the machine and its disk permanently, including everything inside it. It cannot be undone."/>
+                      <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="10"/>
+                          <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="TxtDeleteConfirm" Grid.Column="0"/>
+                        <Button x:Name="BtnDeleteVm" Grid.Column="2" Style="{StaticResource Danger}" Content="Delete permanently"/>
+                      </Grid>
+                      <TextBlock x:Name="DeleteHint" Style="{StaticResource Small}" FontSize="11" Margin="0,8,0,0"
+                                 Text="Type the machine's name above to confirm."/>
+                    </StackPanel>
+                  </Border>
+                </StackPanel>
+              </ScrollViewer>
+            </TabItem>
+          </TabControl>
+        </Grid>
+      </Grid>
+
+      <!-- busy veil, shown during long operations -->
+      <Border x:Name="BusyVeil" Background="#CC0B1020" Visibility="Collapsed">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+          <TextBlock x:Name="BusyText" Style="{StaticResource Body}" FontSize="16" HorizontalAlignment="Center" Text="Working…"/>
+          <TextBlock x:Name="BusySub" Style="{StaticResource Small}" HorizontalAlignment="Center" Margin="0,8,0,0" Text=""/>
+        </StackPanel>
+      </Border>
     </Grid>
   </Grid>
 </Window>

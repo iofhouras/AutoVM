@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AutoVM — a Linux virtual machine on your PC, in one click</title>
+<meta name="description" content="AutoVM sets up a Linux virtual machine on your Windows PC. Choose Kali Linux, type the login and password you want inside it, press Create VM Now! — AutoVM does the rest.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:title" content="AutoVM — a Linux virtual machine on your PC, in one click">
+<meta property="og:description" content="Choose Kali Linux, type a login and a password, press Create VM Now! AutoVM sizes the machine to your device, verifies the image and installs it unattended.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#ffffff; --bg-2:#f5f8fd; --bg-3:#eceff5;
+  --line:#d9e0ec; --line-2:#c3cede;
+  --fg:#0e1726; --muted:#55627a; --faint:#8592ab;
+  --accent:#1f63d6; --accent-fg:#ffffff; --accent-soft:#e8f0fd; --accent-line:#b9d3f5;
+  --ok:#0a7c52; --ok-soft:#e6f6ef;
+  --warn:#9a6300; --warn-soft:#fdf3e3; --warn-line:#efd9ac;
+  --bad:#c02f28; --bad-soft:#fdecea; --bad-line:#f3bcb7;
+  --shadow:0 1px 2px rgba(16,24,40,.05), 0 12px 32px -12px rgba(16,24,40,.18);
+  --radius:14px;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --max:1120px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0b1020; --bg-2:#111a30; --bg-3:#16203a;
+    --line:#243051; --line-2:#33416b;
+    --fg:#e8eef9; --muted:#9aa8c4; --faint:#6f7f9f;
+    --accent:#3e8bff; --accent-fg:#08122a; --accent-soft:#14233f; --accent-line:#2b4676;
+    --ok:#3fd69b; --ok-soft:#0f2a22;
+    --warn:#f0b84e; --warn-soft:#2a2113; --warn-line:#4a3a1c;
+    --bad:#ff7b6e; --bad-soft:#2c1614; --bad-line:#54241f;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 18px 40px -18px rgba(0,0,0,.8);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans);
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+img,svg{max-width:100%; height:auto; display:block}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{line-height:1.2; letter-spacing:-.02em; margin:0}
+.wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
+.skip{position:absolute; left:-9999px}
+.skip:focus{left:12px; top:12px; background:var(--accent); color:var(--accent-fg); padding:10px 16px; border-radius:8px; z-index:99}
+
+/* ---------- header ---------- */
+header{
+  position:sticky; top:0; z-index:50; backdrop-filter:blur(14px);
+  background:color-mix(in srgb, var(--bg) 82%, transparent);
+  border-bottom:1px solid var(--line);
+}
+.bar{display:flex; align-items:center; gap:12px; height:64px}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; color:var(--fg)}
+.brand:hover{text-decoration:none}
+.brand svg{width:26px; height:26px}
+nav{margin-left:auto; display:flex; align-items:center; gap:6px}
+nav a{color:var(--muted); font-size:14.5px; padding:8px 12px; border-radius:8px}
+nav a:hover{color:var(--fg); background:var(--bg-2); text-decoration:none}
+@media (max-width:820px){ nav a.hide-sm{display:none} }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  padding:12px 20px; border-radius:10px; border:1px solid var(--line-2);
+  background:var(--bg-2); color:var(--fg); font-size:15px; font-weight:600;
+  cursor:pointer; transition:transform .12s ease, background .12s ease;
+}
+.btn:hover{text-decoration:none; background:var(--bg-3); transform:translateY(-1px)}
+.btn-primary{background:var(--accent); border-color:transparent; color:var(--accent-fg)}
+.btn-primary:hover{background:var(--accent); filter:brightness(1.08)}
+.btn-sm{padding:8px 14px; font-size:14px}
+.btn-lg{padding:17px 30px; font-size:17px; border-radius:12px}
+
+/* ---------- hero ---------- */
+.hero{position:relative; overflow:hidden; padding:76px 0 8px; border-bottom:1px solid var(--line)}
+.hero::before{
+  content:""; position:absolute; inset:-20% -10% auto -10%; height:560px; pointer-events:none;
+  background:radial-gradient(60% 60% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+}
+.hero-inner{position:relative; text-align:center}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px; font-family:var(--mono);
+  font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:600;
+  color:var(--accent); border:1px solid var(--accent-line); background:var(--accent-soft);
+  padding:6px 14px; border-radius:999px;
+}
+.dot{width:7px; height:7px; border-radius:99px; background:var(--ok)}
+h1{font-size:clamp(36px,5.4vw,58px); font-weight:800; margin:22px auto 0; max-width:19ch}
+.lede{font-size:clamp(17px,2.1vw,20px); color:var(--muted); max-width:64ch; margin:22px auto 0}
+.cta{display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:center; margin:34px 0 0}
+.cta-note{font-size:13.5px; color:var(--faint); width:100%; margin-top:6px; text-align:center}
+.hero figure{margin:52px 0 0; text-align:left}
+.shot{
+  border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+  box-shadow:var(--shadow); background:var(--bg-2);
+}
+figcaption{font-size:13.5px; color:var(--faint); margin-top:12px; text-align:center}
+
+/* ---------- sections ---------- */
+section{padding:76px 0; border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.kicker{
+  font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); font-weight:600; margin-bottom:12px;
+}
+h2{font-size:clamp(26px,3.4vw,36px); font-weight:750; max-width:27ch}
+.sub{color:var(--muted); max-width:66ch; margin:14px 0 0; font-size:16.5px}
+
+.grid{display:grid; gap:20px; margin-top:40px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+@media (max-width:860px){ .g3,.g2{grid-template-columns:1fr} }
+
+.card{
+  background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius);
+  padding:24px;
+}
+.card h3{font-size:18px; margin-bottom:8px}
+.card p{color:var(--muted); margin:0; font-size:15px}
+.step-n{
+  display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px;
+  border-radius:999px; background:var(--accent); color:var(--accent-fg);
+  font-family:var(--mono); font-size:14px; font-weight:700; margin-bottom:14px;
+}
+
+table{width:100%; border-collapse:collapse; margin-top:32px; font-size:15.5px}
+th,td{text-align:left; padding:13px 16px; border-bottom:1px solid var(--line)}
+th{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); font-weight:600}
+td:first-child{font-weight:600; white-space:nowrap; width:1%}
+code{font-family:var(--mono); font-size:.88em; background:var(--bg-3); border:1px solid var(--line); border-radius:5px; padding:2px 6px}
+
+.note{
+  border:1px solid var(--line); border-left:3px solid var(--accent); background:var(--bg-2);
+  border-radius:10px; padding:16px 20px; margin-top:28px; font-size:15.5px; color:var(--muted);
+}
+.note.warn{border-color:var(--warn-line); border-left-color:var(--warn); background:var(--warn-soft)}
+.note strong{color:var(--fg)}
+
+.split{display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center; margin-top:44px}
+@media (max-width:920px){ .split{grid-template-columns:1fr} }
+ul.ticks{list-style:none; margin:20px 0 0; padding:0}
+ul.ticks li{position:relative; padding-left:28px; margin-bottom:12px; color:var(--muted); font-size:15.5px}
+ul.ticks li::before{content:"✓"; position:absolute; left:0; top:-1px; color:var(--ok); font-weight:700}
+ul.crosses li::before{content:"✕"; color:var(--bad); font-size:14px}
+ul.ticks li b{color:var(--fg); font-weight:600}
+
+details{border:1px solid var(--line); border-radius:12px; background:var(--bg-2); margin-bottom:12px}
+summary{cursor:pointer; padding:17px 22px; font-weight:600; font-size:16px; list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+"; float:right; color:var(--faint); font-weight:400; font-size:20px; line-height:1}
+details[open] summary::after{content:"–"}
+details .body{padding:0 22px 20px; color:var(--muted); font-size:15.5px}
+details .body p{margin:0 0 12px}
+details .body p:last-child{margin-bottom:0}
+
+footer{padding:56px 0 72px; color:var(--faint); font-size:14.5px}
+.foot{display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between}
+.foot a{color:var(--muted)}
+</style>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#0B1020"/>
+        <rect x="12.2" y="15.7" width="39.6" height="25.6" rx="3.5" fill="none" stroke="#3E8BFF" stroke-width="3.4"/>
+        <rect x="29.8" y="41.3" width="4.5" height="7" fill="#3E8BFF"/>
+        <rect x="19.8" y="47" width="24.4" height="3.8" rx="1.9" fill="#3E8BFF"/>
+        <path d="M28.7 22.9 L28.7 34.1 L38.1 28.5 Z" fill="#3FD69B"/>
+      </svg>
+      AutoVM
+    </a>
+    <nav>
+      <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#manage">Managing it</a>
+      <a class="hide-sm" href="#requirements">Requirements</a>
+      <a class="hide-sm" href="https://github.com/iofhouras/AutoVM">GitHub</a>
+      <a class="btn btn-primary btn-sm" id="nav-download"
+         href="https://github.com/iofhouras/AutoVM/releases/latest/download/AutoVM-Setup.exe">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================ HERO ============================ -->
+<div class="hero" id="top">
+  <div class="wrap hero-inner">
+    <span class="eyebrow"><span class="dot"></span> Windows · one click · unattended</span>
+    <h1>A Linux virtual machine on your PC, in one click.</h1>
+    <p class="lede">
+      Choose <b>Kali Linux</b>, type the username and password you want inside it, and press
+      <b>Create VM Now!</b> AutoVM measures your computer, sizes a machine that will run well on it,
+      downloads and verifies the system image, installs it without asking you a single installer
+      question, and hands you a screen to manage it.
+    </p>
+
+    <div class="cta">
+      <a class="btn btn-primary btn-lg" id="download-main"
+         href="https://github.com/iofhouras/AutoVM/releases/latest/download/AutoVM-Setup.exe">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/>
+        </svg>
+        Download for Windows
+      </a>
+      <a class="btn btn-lg" href="https://github.com/iofhouras/AutoVM">View the source</a>
+      <p class="cta-note" id="release-info">Free and open source · Windows 10 and 11, 64-bit</p>
+    </div>
+
+    <figure>
+      <div class="shot"><img src="assets/screen-create.svg" alt="The AutoVM window: choose Kali Linux, enter a username and password, then press Create VM Now!" width="1020" height="752"></div>
+      <figcaption>One screen. Pick a system, type a login, press the button.</figcaption>
+    </figure>
+  </div>
+</div>
+
+<!-- ============================ STEPS ============================ -->
+<section id="how">
+  <div class="wrap">
+    <p class="kicker">Getting started</p>
+    <h2>Three steps, and one of them is pressing a button</h2>
+    <p class="sub">There is nothing to configure, no ISO to find, and no installer questions to answer.</p>
+
+    <div class="grid g3">
+      <div class="card">
+        <span class="step-n">1</span>
+        <h3>Download and install</h3>
+        <p>One installer, a few megabytes. It needs administrator rights because virtualization
+           software installs a driver — that is the only prompt you will see.</p>
+      </div>
+      <div class="card">
+        <span class="step-n">2</span>
+        <h3>Choose and type</h3>
+        <p>Pick <b>Kali Linux Virtual Machine</b>, then type the username and password you want to
+           sign in with inside it. AutoVM never stores that password.</p>
+      </div>
+      <div class="card">
+        <span class="step-n">3</span>
+        <h3>Press Create VM Now!</h3>
+        <p>Then leave it. AutoVM installs the hypervisor, fetches a verified image, runs the whole
+           installation and proves the account works by signing in.</p>
+      </div>
+    </div>
+
+    <figure style="margin-top:44px">
+      <div class="shot" style="padding:6px">
+        <img src="assets/flow-dark.svg" alt="What you do, above the seven phases AutoVM runs underneath" class="only-dark">
+        <img src="assets/flow-light.svg" alt="What you do, above the seven phases AutoVM runs underneath" class="only-light">
+      </div>
+    </figure>
+
+    <div class="note">
+      Every phase has to <strong>prove</strong> it worked before the next one starts — the hypervisor
+      by reporting its version, the image by matching a checksum, the account by signing in. If a step
+      cannot prove it, AutoVM stops and tells you which one, in plain words. Work already finished is
+      recorded, so starting again continues rather than repeating.
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SIZING ============================ -->
+<section id="sizing">
+  <div class="wrap">
+    <p class="kicker">It fits itself to your PC</p>
+    <h2>You do not have to know how much memory to give it</h2>
+    <p class="sub">
+      AutoVM reads your computer and does the arithmetic. A machine that is too big makes Windows
+      crawl; one that is too small will not run a desktop. Neither is something you should have to
+      work out.
+    </p>
+
+    <figure style="margin-top:36px">
+      <div class="shot" style="padding:6px">
+        <img src="assets/sizing-dark.svg" alt="Guest memory by host memory: it rises with the device, then flattens at the 8192 MB cap" class="only-dark">
+        <img src="assets/sizing-light.svg" alt="Guest memory by host memory: it rises with the device, then flattens at the 8192 MB cap" class="only-light">
+      </div>
+    </figure>
+
+    <table>
+      <thead><tr><th>What</th><th>How AutoVM decides</th></tr></thead>
+      <tbody>
+        <tr><td>Memory</td><td>40&nbsp;% of your PC's memory, rounded to a 512&nbsp;MB step — never more than half, never above 8192&nbsp;MB</td></tr>
+        <tr><td>Processors</td><td>Half your logical cores, capped at 4</td></tr>
+        <tr><td>Disk</td><td>Up to 60&nbsp;GB, trimmed to fit your roomiest drive with 15&nbsp;GB left for Windows</td></tr>
+        <tr><td>Where</td><td>That drive — not blindly <code>C:</code></td></tr>
+        <tr><td>Software</td><td>A lighter desktop set on a smaller PC, the full set on a larger one</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ MANAGE ============================ -->
+<section id="manage">
+  <div class="wrap">
+    <p class="kicker">After it is built</p>
+    <h2>A place to run it from, and settings you can actually change</h2>
+    <p class="sub">
+      AutoVM does not disappear once the machine exists. It becomes the console for it — and it puts
+      a shortcut on your desktop so you never need to open a terminal.
+    </p>
+
+    <figure style="margin-top:36px">
+      <div class="shot"><img src="assets/screen-manage.svg" alt="The AutoVM management screen: state, hardware, and buttons to start, shut down or save the machine" width="1020" height="752"></div>
+    </figure>
+
+    <div class="grid g2" style="margin-top:36px">
+      <div class="card">
+        <h3>Power and state</h3>
+        <p>Start it in a window or in the background. Shut it down cleanly, freeze it exactly as it
+           is, or force it off when it stops responding.</p>
+      </div>
+      <div class="card">
+        <h3>Hardware</h3>
+        <p>Change memory, processors, video memory and the shared clipboard. AutoVM refuses anything
+           that would starve Windows, and explains why.</p>
+      </div>
+      <div class="card">
+        <h3>Restore points</h3>
+        <p>Take a snapshot before you experiment, then roll the whole machine back to it. One is
+           taken automatically the moment the build finishes.</p>
+      </div>
+      <div class="card">
+        <h3>Files and data</h3>
+        <p>Share a Windows folder with the machine to move files in and out, open its folder on disk,
+           or export the whole thing to a single file as a backup.</p>
+      </div>
+    </div>
+
+    <figure style="margin-top:36px">
+      <div class="shot"><img src="assets/screen-manage-settings.svg" alt="The settings tab: memory, processors, video memory and shared clipboard" width="1020" height="752"></div>
+      <figcaption>Settings are editable when the machine is shut down, and validated against your PC before they are applied.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ REQUIREMENTS ============================ -->
+<section id="requirements">
+  <div class="wrap">
+    <p class="kicker">Before you start</p>
+    <h2>What your PC needs</h2>
+    <p class="sub">AutoVM checks every one of these before it changes anything, and tells you how to
+       fix whatever is missing.</p>
+
+    <table>
+      <tbody>
+        <tr><td>Windows</td><td>10 or 11, 64-bit</td></tr>
+        <tr><td>Rights</td><td>Administrator — virtualization software installs a driver</td></tr>
+        <tr><td>Memory</td><td>6 GB or more</td></tr>
+        <tr><td>Disk</td><td>About 45 GB free on any fixed drive</td></tr>
+        <tr><td>Firmware</td><td>Hardware virtualization (Intel VT-x / AMD-V) switched on</td></tr>
+        <tr><td>Time</td><td>30–90 minutes, mostly unattended</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note warn">
+      <strong>Virtualization switched off?</strong> That is the one thing AutoVM cannot fix from
+      Windows. It will tell you so on the first screen, and point you at the setting in your firmware
+      (usually <code>F1</code>, <code>F2</code> or a Novo button at boot, under Security).
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SAFETY ============================ -->
+<section id="safety">
+  <div class="wrap">
+    <p class="kicker">What it will and will not do</p>
+    <h2>It is careful with the computer you already have</h2>
+
+    <div class="split">
+      <div>
+        <h3 style="font-size:17px; color:var(--accent)">With your say-so</h3>
+        <ul class="ticks">
+          <li>Installs <b>Oracle VirtualBox</b> and 7-Zip</li>
+          <li>Creates <b>one</b> virtual machine and its disk</li>
+          <li>Downloads a system image, and checks it against the publisher's own checksum before using it</li>
+          <li>Writes a control panel and a desktop shortcut</li>
+          <li>Removes existing machines <b>only</b> if you opt in and type <code>DESTROY</code></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:17px; color:var(--bad)">Never</h3>
+        <ul class="ticks crosses">
+          <li>Touches your <b>firewall</b></li>
+          <li>Disables <b>virtualization-based security</b>, Memory Integrity or WSL2 to make the guest faster</li>
+          <li>Works around driver signing — a blocked install is <b>reported</b>, not circumvented</li>
+          <li>Deletes WSL disks, recovery images, <code>Windows.old</code> or mounted disks</li>
+          <li>Keeps a copy of your password</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Your machine can reach out; nothing can reach in.</strong> AutoVM gives the guest
+      address-translated networking only — no port forwarding, no bridged adapter, no SSH server.
+      That is what makes a simple password inside it acceptable. If you ever change that, change the
+      password first.
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section id="faq">
+  <div class="wrap">
+    <p class="kicker">Questions</p>
+    <h2>Things worth knowing</h2>
+
+    <div style="margin-top:32px">
+      <details>
+        <summary>Is this safe to run on my work laptop?</summary>
+        <div class="body">
+          <p>AutoVM is careful, but a managed device is a different question. Company policy often
+             blocks the installation of kernel drivers, which is what a hypervisor needs. If that
+             happens, AutoVM reports it as an environment problem and stops — it will not attempt to
+             work around it.</p>
+          <p>Check with whoever manages the device before installing virtualization software on it.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Why does it ask for administrator rights?</summary>
+        <div class="body">
+          <p>VirtualBox installs kernel-mode drivers, which cannot be done without them. AutoVM asks
+             once, at launch, rather than surprising you halfway through a build.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Where does the Kali image come from?</summary>
+        <div class="body">
+          <p>Straight from Kali's own mirror. AutoVM reads the current filename from the publisher's
+             directory listing rather than hardcoding one — versions rotate quarterly and pinned
+             names stop working — and verifies the download against the publisher's own SHA-256
+             before it is attached to anything. A mismatch deletes the file and stops the build.</p>
+        </div>
+      </details>
+      <details>
+        <summary>My login has a capital letter. Does that work?</summary>
+        <div class="body">
+          <p>Yes, and it is handled properly. The Linux installer only accepts lowercase account
+             names and quietly waits at a prompt when it gets anything else — the usual reason an
+             unattended install appears to hang forever. AutoVM creates the account in lowercase,
+             renames it once it exists, moves the home directory, repairs ownership, and then proves
+             it by signing in as the name you asked for.</p>
+          <p>Remember that Linux logins are case-sensitive: you sign in with exactly what you typed.</p>
+        </div>
+      </details>
+      <details>
+        <summary>What if I close the window halfway through?</summary>
+        <div class="body">
+          <p>Nothing is lost. Every phase records its outcome before the next one starts, so opening
+             AutoVM again continues from the last completed step instead of starting over — and in
+             particular it never repeats anything destructive.</p>
+        </div>
+      </details>
+      <details>
+        <summary>How do I get rid of it all afterwards?</summary>
+        <div class="body">
+          <p>Delete the machine from the <b>Files &amp; data</b> tab — it asks you to type the
+             machine's name, then removes it and its disk. Uninstall AutoVM from Windows Settings,
+             and uninstall VirtualBox the same way if you no longer want it.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Can I use it without the window?</summary>
+        <div class="body">
+          <p>Yes. The engine is a PowerShell module and the wizard is one caller. There is a console
+             front end for scripted or repeated builds, and every command is documented in the
+             repository.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CLOSING ============================ -->
+<section id="get">
+  <div class="wrap" style="text-align:center">
+    <h2 style="margin:0 auto; max-width:20ch">Ready when you are</h2>
+    <p class="sub" style="margin:16px auto 0">
+      One installer. One screen. One button.
+    </p>
+    <div class="cta" style="justify-content:center">
+      <a class="btn btn-primary btn-lg" id="download-foot"
+         href="https://github.com/iofhouras/AutoVM/releases/latest/download/AutoVM-Setup.exe">
+        Download AutoVM for Windows
+      </a>
+      <p class="cta-note" id="release-info-foot">Free and open source, MIT licensed.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      AutoVM is free software under the <a href="https://github.com/iofhouras/AutoVM/blob/main/LICENSE">MIT licence</a>.
+      It installs and drives third-party software under its own terms.
+    </div>
+    <div>
+      <a href="https://github.com/iofhouras/AutoVM">Source</a> ·
+      <a href="https://github.com/iofhouras/AutoVM/issues">Report a problem</a> ·
+      <a href="https://github.com/iofhouras/AutoVM/blob/main/SECURITY.md">Security</a> ·
+      <a href="https://github.com/iofhouras/AutoVM/blob/main/docs/agent-directive/KaliVMAgentDirective-v2.pdf">Design document</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+/* Theme-paired figures: show the one that matches the reader's setting. */
+.only-dark{display:none}
+@media (prefers-color-scheme: dark){
+  .only-dark{display:block}
+  .only-light{display:none}
+}
+</style>
+
+<script>
+// Fill in the real release details when GitHub can be reached. The page is
+// perfectly usable if this fails, so every step is optional.
+(function () {
+  var API = 'https://api.github.com/repos/iofhouras/AutoVM/releases/latest';
+  var ACTIONS = 'https://github.com/iofhouras/AutoVM/actions/workflows/build.yml';
+
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) { el.textContent = text; }
+  }
+
+  function fallbackToArtifacts() {
+    ['download-main', 'download-foot', 'nav-download'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) { el.href = ACTIONS; }
+    });
+    var message = 'No published release yet — the newest installer is on the Actions page, under Artifacts.';
+    setText('release-info', message);
+    setText('release-info-foot', message);
+  }
+
+  fetch(API, { headers: { Accept: 'application/vnd.github+json' } })
+    .then(function (response) {
+      if (!response.ok) { throw new Error('no release'); }
+      return response.json();
+    })
+    .then(function (release) {
+      var asset = (release.assets || []).filter(function (a) {
+        return /^AutoVM-Setup.*\.exe$/.test(a.name);
+      })[0];
+      if (!asset) { throw new Error('no installer asset'); }
+
+      var size = (asset.size / 1048576).toFixed(1) + ' MB';
+      var when = new Date(release.published_at).toLocaleDateString(undefined, {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+      var line = release.tag_name + ' · ' + size + ' · released ' + when +
+                 ' · Windows 10 and 11, 64-bit';
+      setText('release-info', line);
+      setText('release-info-foot', line + ' · MIT licensed');
+    })
+    .catch(fallbackToArtifacts);
+})();
+</script>
+</body>
+</html>

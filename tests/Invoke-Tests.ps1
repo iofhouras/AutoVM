@@ -514,6 +514,113 @@ Test-Case 'does not carry the password and says so' {
     Assert-NotMatch 'S3cret-Pass' $note
 }
 
+# ---------------------------------------------------------------- management
+Describe-Group 'Managing a machine'
+
+function New-TestMachine {
+    param([string]$State = 'poweroff', [int]$Ram = 3072, [int]$Cpus = 2, [int]$Vram = 128)
+    [pscustomobject]@{ Name = 'AutoVM-kali'; State = $State; RamMB = $Ram; Cpus = $Cpus; VramMB = $Vram }
+}
+
+Test-Case 'accepts a sensible change on a powered-off machine' {
+    $change = Test-AutoVMSettingChange -HostProfile (New-TestHostProfile -RamGB 16 -Cores 8) `
+        -Machine (New-TestMachine) -RamMB 6144 -Cpus 4 -VramMB 128
+    Assert-True $change.IsValid $change.Reason
+    Assert-Equal 6144 $change.RamMB
+}
+
+Test-Case 'refuses to change hardware while the machine is running' {
+    $change = Test-AutoVMSettingChange -HostProfile (New-TestHostProfile) `
+        -Machine (New-TestMachine -State 'running') -RamMB 4096
+    Assert-False $change.IsValid
+    Assert-Match 'Shut the machine down' $change.Reason
+}
+
+Test-Case 'still refuses to hand the guest more than half the host' {
+    $change = Test-AutoVMSettingChange -HostProfile (New-TestHostProfile -RamGB 8) `
+        -Machine (New-TestMachine) -RamMB 6144
+    Assert-False $change.IsValid "8 GB host, 6144 MB guest should be refused"
+    Assert-Match 'half of this' $change.Reason
+}
+
+Test-Case 'refuses a machine too small to boot' {
+    $change = Test-AutoVMSettingChange -HostProfile (New-TestHostProfile -RamGB 16) `
+        -Machine (New-TestMachine) -RamMB 256
+    Assert-False $change.IsValid
+}
+
+Test-Case 'refuses more processors than the host has' {
+    $change = Test-AutoVMSettingChange -HostProfile (New-TestHostProfile -Cores 4) `
+        -Machine (New-TestMachine) -Cpus 8
+    Assert-False $change.IsValid
+    Assert-Match 'between 1 and 4' $change.Reason
+}
+
+Test-Case 'keeps video memory inside what VirtualBox accepts' {
+    $host16 = New-TestHostProfile -RamGB 16
+    Assert-False (Test-AutoVMSettingChange -HostProfile $host16 -Machine (New-TestMachine) -VramMB 8).IsValid
+    Assert-False (Test-AutoVMSettingChange -HostProfile $host16 -Machine (New-TestMachine) -VramMB 512).IsValid
+    Assert-True (Test-AutoVMSettingChange -HostProfile $host16 -Machine (New-TestMachine) -VramMB 128).IsValid
+}
+
+Test-Case 'leaves unspecified values alone' {
+    $change = Test-AutoVMSettingChange -HostProfile (New-TestHostProfile -RamGB 16) `
+        -Machine (New-TestMachine -Ram 3072 -Cpus 2 -Vram 64) -RamMB 4096
+    Assert-Equal 2 $change.Cpus
+    Assert-Equal 64 $change.VramMB
+}
+
+Test-Case 'warns before it gets uncomfortable, without refusing' {
+    $change = Test-AutoVMSettingChange -HostProfile (New-TestHostProfile -RamGB 16 -Cores 4) `
+        -Machine (New-TestMachine) -RamMB 7680 -Cpus 3
+    Assert-True $change.IsValid
+    Assert-True (@($change.Warnings).Count -ge 2) 'expected warnings about memory and processors'
+}
+
+Test-Case 'validates restore point names' {
+    Assert-True (Test-AutoVMSnapshotName -Name 'before tool install').IsValid
+    Assert-False (Test-AutoVMSnapshotName -Name '').IsValid
+    Assert-False (Test-AutoVMSnapshotName -Name ('x' * 65)).IsValid
+    Assert-False (Test-AutoVMSnapshotName -Name 'bad"name').IsValid
+    Assert-False (Test-AutoVMSnapshotName -Name 'bad$(name)').IsValid
+}
+
+Test-Case 'validates shared folder names' {
+    Assert-True (Test-AutoVMSharedFolderName -Name 'exchange').IsValid
+    Assert-True (Test-AutoVMSharedFolderName -Name 'my-share_2').IsValid
+    Assert-False (Test-AutoVMSharedFolderName -Name '').IsValid
+    Assert-False (Test-AutoVMSharedFolderName -Name 'has space').IsValid
+    Assert-False (Test-AutoVMSharedFolderName -Name '-leading').IsValid
+    Assert-False (Test-AutoVMSharedFolderName -Name ('a' * 33)).IsValid
+}
+
+Test-Case 'reads a snapshot list into records' {
+    $lines = @(
+        'SnapshotName="clean-baseline"'
+        'SnapshotUUID="11111111-1111-1111-1111-111111111111"'
+        'SnapshotDescription="First good boot"'
+        'SnapshotName-1="before tools"'
+        'SnapshotUUID-1="22222222-2222-2222-2222-222222222222"'
+    )
+    $snapshots = ConvertFrom-AutoVMSnapshotList -Lines $lines
+    Assert-Equal 2 $snapshots.Count
+    Assert-Equal 'clean-baseline' $snapshots[0].Name
+    Assert-Equal 'First good boot' $snapshots[0].Description
+    Assert-Equal 'before tools' $snapshots[1].Name
+}
+
+Test-Case 'reads an empty snapshot list as no snapshots' {
+    Assert-Equal 0 (ConvertFrom-AutoVMSnapshotList -Lines @()).Count
+    Assert-Equal 0 (ConvertFrom-AutoVMSnapshotList -Lines @('VMState="poweroff"')).Count
+}
+
+Test-Case 'deleting a machine needs its name typed exactly' {
+    Assert-Throws { Remove-AutoVMMachine -Name 'AutoVM-kali' -Confirmation 'autovm-kali' -Confirm:$false } 'type its name exactly'
+    Assert-Throws { Remove-AutoVMMachine -Name 'AutoVM-kali' -Confirmation '' -Confirm:$false } 'type its name exactly'
+    Assert-Throws { Remove-AutoVMMachine -Name 'AutoVM-kali' -Confirmation 'yes' -Confirm:$false } 'type its name exactly'
+}
+
+
 # ---------------------------------------------------------------- summary
 Write-Host ''
 Write-Host ('{0} passed, {1} failed' -f $script:Passed, $script:Failed) -ForegroundColor $(if ($script:Failed) { 'Red' } else { 'Green' })

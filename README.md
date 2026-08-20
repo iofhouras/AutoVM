@@ -16,8 +16,10 @@
   <a href="LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-8b949e?labelColor=1b1f24"></a>
 </p>
 
+<h3><a href="https://iofhouras.github.io/AutoVM/">🌐&nbsp; autovm website &nbsp;— &nbsp;download and install it here</a></h3>
+
 <p>
-  <b><a href="https://github.com/iofhouras/AutoVM/releases">Download</a></b>
+  <b><a href="https://github.com/iofhouras/AutoVM/releases/latest/download/AutoVM-Setup.exe">Direct download</a></b>
   &nbsp;·&nbsp; <a href="#how-it-works">How it works</a>
   &nbsp;·&nbsp; <a href="#every-screen">See every screen</a>
   &nbsp;·&nbsp; <a href="#what-it-decides-for-you">What it decides for you</a>
@@ -39,13 +41,20 @@ your desktop.
 
 ## Get it
 
-**1 · Download** — [`AutoVM-Setup-<version>.exe`][releases] from the latest release.
+### → [**autovm website**](https://iofhouras.github.io/AutoVM/)
+
+The website is the place to send anyone who just wants the application. It has the download, the
+requirements, screenshots of every screen and the answers to the usual questions.
+
+Or go straight there:
+
+**1 · Download** — [`AutoVM-Setup.exe`](https://github.com/iofhouras/AutoVM/releases/latest/download/AutoVM-Setup.exe)
 
 **2 · Install** — run it. It needs administrator rights, because virtualization software installs
 a driver.
 
-**3 · Start it** — from the Start menu. AutoVM checks the device, asks for a login and a password,
-shows you exactly what it will build, and then builds it.
+**3 · Create** — start AutoVM, choose **Kali Linux Virtual Machine**, type the username and
+password you want inside it, and press **Create VM Now!**
 
 > [!NOTE]
 > No release published yet? Every push also builds an installer — take it from the newest green run
@@ -84,70 +93,70 @@ for an update, starting AutoVM again picks up where it stopped instead of doing 
 ## Every screen
 
 <details open>
-<summary><b>2 · This device</b> — what AutoVM checks before it touches anything</summary>
+<summary><b>Create</b> — the whole thing on one screen</summary>
 <br>
 
-<img alt="The device check screen, showing six gates with their findings" src="docs/assets/screen-2-device.svg" width="100%">
+<img alt="The create screen: pick Kali Linux, type a username and password, press Create VM Now!" src="docs/assets/screen-create.svg" width="100%">
 
-Eight checks run in one pass, so you get the whole picture rather than the first problem it hit.
-A red item blocks the build and comes with the fix. An amber item is a trade-off you decide —
-AutoVM will never turn off Windows security features to make your guest faster.
+Pick a system, type the login you want, press the button. The bar along the bottom tells you what
+AutoVM has decided for this particular computer before you commit to anything, and the device check
+runs quietly in the background while you type.
+
+Type a login with **capitals** if you want one — which is harder than it looks. The Linux installer
+only accepts lowercase account names and silently waits at a prompt when it gets anything else, the
+usual reason an unattended install appears to hang forever. AutoVM creates the account in lowercase,
+renames it once it exists, moves the home directory, repairs ownership, and then proves the result
+by signing in as the name you actually asked for.
 
 </details>
 
 <details>
-<summary><b>3 · Your account</b> — the only thing you have to type</summary>
+<summary><b>Building</b> — leave it running</summary>
 <br>
 
-<img alt="The account screen, with login, password and strength feedback" src="docs/assets/screen-3-account.svg" width="100%">
+<img alt="The build screen, with progress and a live log" src="docs/assets/screen-building.svg" width="100%">
 
-Type the login you want. **Including capitals** — which is harder than it looks: the Linux
-installer only accepts lowercase account names and silently waits at a prompt when it gets one it
-does not like. AutoVM creates the account in lowercase, renames it once it exists, moves the home
-directory, fixes ownership, and then proves the result by signing in as the name you actually
-asked for.
+Long quiet stretches are normal: the package upgrade inside the installer is most of the wait. The
+full log is written to `C:\ProgramData\AutoVM\logs` as it goes, and your password never appears in
+it. Closing the window costs the current step, not the run.
 
 </details>
 
 <details>
-<summary><b>4 · Review</b> — everything before anything</summary>
+<summary><b>Ready</b> — what you are left with</summary>
 <br>
 
-<img alt="The review screen, listing the machine that will be created" src="docs/assets/screen-4-review.svg" width="100%">
+<img alt="The finished screen, with the handover notes" src="docs/assets/screen-ready.svg" width="100%">
 
-Nothing on your computer has changed at this point. This screen is the last one where stopping
-costs you nothing.
+Plain language, no jargon: how to start it, exactly how to sign in, how to undo everything, and the
+one security condition attached to your password.
 
 </details>
 
 <details>
-<summary><b>5 · Building</b> — leave it running</summary>
+<summary><b>My machines</b> — power, state and hardware</summary>
 <br>
 
-<img alt="The build screen, with progress and a live log" src="docs/assets/screen-5-building.svg" width="100%">
+<img alt="The management screen: state, hardware and power controls" src="docs/assets/screen-manage.svg" width="100%">
 
-Long quiet stretches are normal: the package upgrade inside the installer is most of the wait.
-The full log is written to `C:\ProgramData\AutoVM\logs` as it goes, and your password never
-appears in it.
+AutoVM does not disappear once the machine exists — it becomes the console for it. Start it in a
+window or in the background, shut it down cleanly, freeze its state, or force it off when it stops
+responding.
 
 </details>
 
 <details>
-<summary><b>6 · Ready</b> — what you are left with</summary>
+<summary><b>Settings</b> — and the ones AutoVM refuses</summary>
 <br>
 
-<img alt="The finished screen, with the handover notes" src="docs/assets/screen-6-ready.svg" width="100%">
+<img alt="The settings tab: memory, processors, video memory and shared clipboard" src="docs/assets/screen-manage-settings.svg" width="100%">
 
-Plain language, no jargon: how to start it, exactly how to sign in, how to undo everything, and
-the one security condition attached to your password.
+Memory, processors, video memory and the shared clipboard, editable while the machine is shut down
+and validated against your PC before they are applied — the same half-the-host ceiling that governs
+a new build governs a later change.
 
-</details>
-
-<details>
-<summary><b>1 · Welcome</b> — the first screen</summary>
-<br>
-
-<img alt="The welcome screen" src="docs/assets/screen-1-welcome.svg" width="100%">
+Restore points and shared folders live on the next two tabs, along with export to a single `.ova`
+file and deleting the machine (which asks you to type its name).
 
 </details>
 
@@ -197,7 +206,8 @@ as protected and kept.
 </td>
 <td width="48%" valign="top">
 
-<p>A shortcut lands on your desktop. From it you can:</p>
+<p>A shortcut also lands on your desktop, for starting the machine without opening AutoVM at all.
+From it you can:</p>
 <ul>
   <li><b>Start</b> the machine in a window or headless</li>
   <li><b>Shut down</b> cleanly, or save its state</li>
@@ -291,8 +301,9 @@ src/AutoVM.App/        the wizard — WPF window and its host script, plus a con
 src/AutoVM.Launcher/   a small C# executable so the app has an icon and one elevation prompt
 build/                 launcher compilation and the Inno Setup installer definition
 tests/                 dependency-free test suite
+site/                  the website, deployed to GitHub Pages by .github/workflows/pages.yml
 docs/agent-directive/  the 50-page design document this implementation follows
-docs/assets/           the artwork on this page, and the script that generates it
+docs/assets/           the artwork on this page and the website, and the script that generates it
 ```
 
 </details>
@@ -315,6 +326,8 @@ docs/assets/           the artwork on this page, and the script that generates i
 
 ## Documentation
 
+- **[The AutoVM website](https://iofhouras.github.io/AutoVM/)** — the page to send anyone who just
+  wants to download and use the application.
 - **[Agent Directive rev 2.0](docs/agent-directive/KaliVMAgentDirective-v2.pdf)** — the 50-page
   design document behind the engine: phases, gates, failure playbook, and the reasoning behind
   each decision.

@@ -25,13 +25,32 @@ Using it
 --------
 
   1.  Start AutoVM from the Start menu.
-  2.  Let it check this device, then choose the system, login and password.
-  3.  Review what will be created, then start the build.
-  4.  When it finishes, use the AutoVM Control Center shortcut on your desktop
-      to start, shut down or reset the machine.
+  2.  Choose "Kali Linux Virtual Machine".
+  3.  Type the username and password you want to use inside the machine.
+  4.  Press "Create VM Now!" and leave it running.
+  5.  When it finishes, press "Manage my machine" - or use the AutoVM Control
+      Center shortcut on your desktop.
 
 Your login is case-sensitive inside Linux. If you type a capital letter, you
 will need that capital letter to sign in.
+
+
+Managing the machine afterwards
+-------------------------------
+
+The "My machines" screen inside AutoVM is where the machine lives once it
+exists:
+
+  Overview        start it in a window or in the background, shut it down,
+                  save its state, or force it off if it stops responding
+  Settings        memory, processors, video memory and the shared clipboard
+                  (editable while the machine is shut down)
+  Restore points  take a snapshot before you experiment, then roll the whole
+                  machine back to it
+  Files & data    share a Windows folder with the machine, open its folder on
+                  disk, export it to a single file, or delete it
+
+AutoVM opens straight onto this screen whenever a machine already exists.
 
 
 What AutoVM will not do

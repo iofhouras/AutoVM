@@ -1,0 +1,62 @@
+name: website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'docs/assets/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; let a run in progress finish rather than cancelling it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site/assets
+          cp -r site/. _site/
+          # The figures live with the documentation; the site links to the same files.
+          cp docs/assets/*.svg docs/assets/*.png _site/assets/
+          touch _site/.nojekyll
+          ls -la _site _site/assets | head -40
+
+      - name: Check every referenced asset exists
+        run: |
+          missing=0
+          for ref in $(grep -oE '(src|href|content)="assets/[^"]+"' _site/index.html | sed -E 's/.*"assets\/(.*)"/\1/' | sort -u); do
+            if [ ! -f "_site/assets/$ref" ]; then
+              echo "::error::index.html references assets/$ref, which was not assembled"
+              missing=$((missing+1))
+            fi
+          done
+          [ "$missing" -eq 0 ] || exit 1
+          echo "all referenced assets present"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

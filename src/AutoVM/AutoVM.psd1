@@ -1,6 +1,6 @@
 @{
     RootModule        = 'AutoVM.psm1'
-    ModuleVersion     = '1.0.0'
+    ModuleVersion     = '1.1.0'
     GUID              = '4f1d9a2e-6c07-4a1b-9a0f-3e6c2b7d15c4'
     Author            = 'AutoVM'
     CompanyName       = 'AutoVM'
@@ -37,6 +37,25 @@
         'Test-AutoVMProtectedPath'
         'Test-AutoVMExcludedPath'
         'Invoke-AutoVMTeardown'
+
+        # Managing a machine after it is built
+        'Get-AutoVMMachine'
+        'Test-AutoVMSettingChange'
+        'Set-AutoVMMachineSetting'
+        'Start-AutoVMMachine'
+        'Stop-AutoVMMachine'
+        'Test-AutoVMSnapshotName'
+        'ConvertFrom-AutoVMSnapshotList'
+        'Get-AutoVMSnapshot'
+        'New-AutoVMSnapshot'
+        'Restore-AutoVMSnapshot'
+        'Remove-AutoVMSnapshot'
+        'Test-AutoVMSharedFolderName'
+        'Get-AutoVMSharedFolder'
+        'Add-AutoVMSharedFolder'
+        'Remove-AutoVMSharedFolder'
+        'Export-AutoVMMachine'
+        'Remove-AutoVMMachine'
 
         # Handover
         'New-AutoVMControlCenter'
