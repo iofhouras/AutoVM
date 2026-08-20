@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 300" width="1180" height="300" role="img" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+
+<rect x="0" y="0" width="1180" height="300" rx="0" fill="#0d1117" />
+<text x="40" y="44" fill="#e6edf7" font-size="19" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">What AutoVM touches, and what it will not</text>
+<text x="40" y="68" fill="#9aa8bf" font-size="13" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">The right-hand column is not a setting. Nothing in the codebase can do those things.</text>
+<rect x="40" y="92" width="538.0" height="176" rx="10" fill="#14243c" stroke="#28456e" stroke-width="1" opacity="0.9" />
+<text x="62" y="120" fill="#3987e5" font-size="10.5" font-weight="600" text-anchor="start" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" letter-spacing="0.14em">CHANGES, WITH YOUR SAY-SO</text>
+<circle cx="67" cy="144" r="3" fill="#3987e5"/>
+<text x="80" y="148" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Installs Oracle VirtualBox and 7-Zip</text>
+<circle cx="67" cy="168" r="3" fill="#3987e5"/>
+<text x="80" y="172" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Creates one virtual machine and its disk</text>
+<circle cx="67" cy="192" r="3" fill="#3987e5"/>
+<text x="80" y="196" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Downloads a verified system image to ProgramData</text>
+<circle cx="67" cy="216" r="3" fill="#3987e5"/>
+<text x="80" y="220" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Writes a control panel and a desktop shortcut</text>
+<circle cx="67" cy="240" r="3" fill="#3987e5"/>
+<text x="80" y="244" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Removes existing machines — only if you opt in and type DESTROY</text>
+<rect x="602.0" y="92" width="538.0" height="176" rx="10" fill="#2c1614" stroke="#ff7b6e" stroke-width="1" opacity="0.9" />
+<text x="624.0" y="120" fill="#ff7b6e" font-size="10.5" font-weight="600" text-anchor="start" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" letter-spacing="0.14em">NEVER TOUCHES</text>
+<circle cx="629.0" cy="144" r="3" fill="#ff7b6e"/>
+<text x="642.0" y="148" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Your firewall rules</text>
+<circle cx="629.0" cy="168" r="3" fill="#ff7b6e"/>
+<text x="642.0" y="172" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Virtualization-based security, Memory Integrity, WSL2</text>
+<circle cx="629.0" cy="192" r="3" fill="#ff7b6e"/>
+<text x="642.0" y="196" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Driver signature enforcement — it reports a block instead</text>
+<circle cx="629.0" cy="216" r="3" fill="#ff7b6e"/>
+<text x="642.0" y="220" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">WSL disks, recovery images, Windows.old, mounted disks</text>
+<circle cx="629.0" cy="240" r="3" fill="#ff7b6e"/>
+<text x="642.0" y="244" fill="#e6edf7" font-size="12.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Anything on removable or network media</text>
+</svg>

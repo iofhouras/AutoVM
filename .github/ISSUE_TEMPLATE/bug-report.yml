@@ -1,0 +1,47 @@
+name: Something else is wrong
+description: The application, the control panel or the finished machine behaves incorrectly.
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where?
+      options:
+        - The AutoVM wizard
+        - The control panel on the desktop
+        - The finished virtual machine
+        - The installer
+        - The PowerShell module or console front end
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can we reproduce it?
+      placeholder: |
+        1. Start AutoVM
+        2. ...
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: AutoVM version
+      description: Settings > Apps, or the version in the installer filename.
+      placeholder: 1.0.0

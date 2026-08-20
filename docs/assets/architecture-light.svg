@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 372" width="1180" height="372" role="img" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+
+<rect x="0" y="0" width="1180" height="372" rx="0" fill="#ffffff" />
+<text x="40" y="44" fill="#0e1726" font-size="19" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">How it fits together</text>
+<text x="40" y="68" fill="#55627a" font-size="13" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">The engine never talks to the window. It emits records; the wizard is one listener, a script is another.</text>
+<rect x="40" y="96" width="720" height="56" rx="10" fill="#f6f8fc" stroke="#d5dbe6" stroke-width="1" />
+<rect x="40" y="108" width="3" height="32" rx="2" fill="#8592ab" />
+<text x="62" y="122" fill="#0e1726" font-size="14.5" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">AutoVM.exe</text>
+<text x="62" y="140" fill="#55627a" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">C# launcher — one icon, one elevation prompt</text>
+<line x1="400.0" y1="153" x2="400.0" y2="155" stroke="#8592ab" stroke-width="1.4" stroke-linecap="butt"/><path d="M395.5,154 L400.0,161 L404.5,154 Z" fill="#8592ab"/>
+<rect x="40" y="162" width="720" height="56" rx="10" fill="#f6f8fc" stroke="#d5dbe6" stroke-width="1" />
+<rect x="40" y="174" width="3" height="32" rx="2" fill="#2a78d6" />
+<text x="62" y="188" fill="#0e1726" font-size="14.5" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">AutoVM.ps1  +  MainWindow.xaml</text>
+<text x="62" y="206" fill="#55627a" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">WPF wizard — six screens, no engine logic of its own</text>
+<line x1="400.0" y1="219" x2="400.0" y2="221" stroke="#8592ab" stroke-width="1.4" stroke-linecap="butt"/><path d="M395.5,220 L400.0,227 L404.5,220 Z" fill="#8592ab"/>
+<rect x="40" y="228" width="720" height="56" rx="10" fill="#f6f8fc" stroke="#d5dbe6" stroke-width="1" />
+<rect x="40" y="240" width="3" height="32" rx="2" fill="#0a7c52" />
+<text x="62" y="254" fill="#0e1726" font-size="14.5" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">AutoVM module</text>
+<text x="62" y="272" fill="#55627a" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">seven phases · gates · planning · resume ledger · VirtualBox driver</text>
+<line x1="400.0" y1="285" x2="400.0" y2="287" stroke="#8592ab" stroke-width="1.4" stroke-linecap="butt"/><path d="M395.5,286 L400.0,293 L404.5,286 Z" fill="#8592ab"/>
+<rect x="40" y="294" width="720" height="56" rx="10" fill="#f6f8fc" stroke="#d5dbe6" stroke-width="1" />
+<rect x="40" y="306" width="3" height="32" rx="2" fill="#8592ab" />
+<text x="62" y="320" fill="#0e1726" font-size="14.5" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">VBoxManage  ·  winget</text>
+<text x="62" y="338" fill="#55627a" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">the only external commands AutoVM runs</text>
+<rect x="800" y="96" width="340" height="122" rx="10" fill="#f6f8fc" stroke="#d5dbe6" stroke-width="1" />
+<text x="822" y="124" fill="#55627a" font-size="10.5" font-weight="600" text-anchor="start" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" letter-spacing="0.14em">SAME ENGINE, NO WINDOW</text>
+<text x="822" y="150" fill="#0e1726" font-size="13" font-weight="600" text-anchor="start" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">AutoVM.Console.ps1</text>
+<text x="822" y="172" fill="#55627a" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Scripted or repeated builds.</text>
+<text x="822" y="190" fill="#55627a" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Prints a plan with -Plan and</text>
+<text x="822" y="206" fill="#55627a" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">changes nothing.</text>
+<line x1="764" y1="224" x2="789" y2="224" stroke="#8592ab" stroke-width="1.4" stroke-linecap="butt"/><path d="M788,219.5 L795,224 L788,228.5 Z" fill="#8592ab"/>
+<rect x="800" y="236" width="340" height="92" rx="10" fill="#e6f6ef" stroke="#0a7c52" stroke-width="1" opacity="0.85" />
+<text x="822" y="264" fill="#0a7c52" font-size="10.5" font-weight="600" text-anchor="start" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" letter-spacing="0.14em">TESTED WITHOUT A HYPERVISOR</text>
+<text x="822" y="288" fill="#0e1726" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Sizing, gates, credentials, answer</text>
+<text x="822" y="304" fill="#0e1726" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">files and deletion safety are pure</text>
+<text x="822" y="320" fill="#0e1726" font-size="12" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">functions. 65 tests, any OS.</text>
+</svg>

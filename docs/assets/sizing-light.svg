@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 500" width="1180" height="500" role="img" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+
+<rect x="0" y="0" width="1180" height="500" rx="0" fill="#ffffff" />
+<text x="40" y="46" fill="#0e1726" font-size="19" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">What AutoVM gives the guest, by how much memory the PC has</text>
+<text x="40" y="70" fill="#55627a" font-size="13" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Guest memory in MB. Two rules shape it: never more than half the host, never more than 8192 MB.</text>
+<line x1="92" y1="362.0" x2="1120" y2="362.0" stroke="#e9edf4" stroke-width="1" stroke-linecap="butt"/>
+<text x="80" y="366.0" fill="#8592ab" font-size="11" font-weight="400" text-anchor="end" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">0</text>
+<line x1="92" y1="306.44444444444446" x2="1120" y2="306.44444444444446" stroke="#e9edf4" stroke-width="1" stroke-linecap="butt"/>
+<text x="80" y="310.44444444444446" fill="#8592ab" font-size="11" font-weight="400" text-anchor="end" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">2,048</text>
+<line x1="92" y1="250.8888888888889" x2="1120" y2="250.8888888888889" stroke="#e9edf4" stroke-width="1" stroke-linecap="butt"/>
+<text x="80" y="254.8888888888889" fill="#8592ab" font-size="11" font-weight="400" text-anchor="end" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">4,096</text>
+<line x1="92" y1="195.33333333333334" x2="1120" y2="195.33333333333334" stroke="#e9edf4" stroke-width="1" stroke-linecap="butt"/>
+<text x="80" y="199.33333333333334" fill="#8592ab" font-size="11" font-weight="400" text-anchor="end" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">6,144</text>
+<line x1="92" y1="139.7777777777778" x2="1120" y2="139.7777777777778" stroke="#e9edf4" stroke-width="1" stroke-linecap="butt"/>
+<text x="80" y="143.7777777777778" fill="#8592ab" font-size="11" font-weight="400" text-anchor="end" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">8,192</text>
+<text x="80" y="100" fill="#8592ab" font-size="11" font-weight="400" text-anchor="end" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">MB</text>
+<line x1="92" y1="112" x2="92" y2="362" stroke="#d5dbe6" stroke-width="1" stroke-linecap="butt"/>
+<line x1="92" y1="362" x2="1120" y2="362" stroke="#d5dbe6" stroke-width="1" stroke-linecap="butt"/>
+<line x1="92" y1="139.7777777777778" x2="1120" y2="139.7777777777778" stroke="#b4650a" stroke-width="1.4" stroke-linecap="butt" stroke-dasharray="6 5"/>
+<text x="102" y="130.7777777777778" fill="#b4650a" font-size="11" font-weight="600" text-anchor="start" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">8192 MB cap</text>
+<path d="M153.8,362 L153.8,310.44444444444446 q0,-4 4,-4 h74 q4,0 4,4 L235.8,362 Z" fill="#2a78d6"/>
+<line x1="141.8" y1="306.44444444444446" x2="247.8" y2="306.44444444444446" stroke="#55627a" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="5 4"/>
+<text x="194.8" y="294.44444444444446" fill="#0e1726" font-size="16" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">2,048</text>
+<text x="194.8" y="328.44444444444446" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">50%</text>
+<text x="194.8" y="388" fill="#0e1726" font-size="13.5" font-weight="600" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">4 GB PC</text>
+<text x="194.8" y="407" fill="#8592ab" font-size="11" font-weight="400" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">4 cores</text>
+<text x="194.8" y="424" fill="#2a78d6" font-size="11" font-weight="600" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">2 vCPU</text>
+<path d="M359.40000000000003,362 L359.40000000000003,282.6666666666667 q0,-4 4,-4 h74 q4,0 4,4 L441.40000000000003,362 Z" fill="#2a78d6"/>
+<line x1="347.40000000000003" y1="250.8888888888889" x2="453.40000000000003" y2="250.8888888888889" stroke="#55627a" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="5 4"/>
+<text x="400.40000000000003" y="266.6666666666667" fill="#0e1726" font-size="16" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">3,072</text>
+<text x="400.40000000000003" y="300.6666666666667" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">38%</text>
+<text x="400.40000000000003" y="388" fill="#0e1726" font-size="13.5" font-weight="600" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">8 GB PC</text>
+<text x="400.40000000000003" y="407" fill="#8592ab" font-size="11" font-weight="400" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">8 cores</text>
+<text x="400.40000000000003" y="424" fill="#2a78d6" font-size="11" font-weight="600" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">4 vCPU</text>
+<path d="M565.0,362 L565.0,199.33333333333334 q0,-4 4,-4 h74 q4,0 4,4 L647.0,362 Z" fill="#2a78d6"/>
+<line x1="553.0" y1="139.7777777777778" x2="659.0" y2="139.7777777777778" stroke="#55627a" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="5 4"/>
+<text x="606.0" y="183.33333333333334" fill="#0e1726" font-size="16" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">6,144</text>
+<text x="606.0" y="217.33333333333334" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">38%</text>
+<text x="606.0" y="388" fill="#0e1726" font-size="13.5" font-weight="600" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">16 GB PC</text>
+<text x="606.0" y="407" fill="#8592ab" font-size="11" font-weight="400" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">8 cores</text>
+<text x="606.0" y="424" fill="#2a78d6" font-size="11" font-weight="600" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">4 vCPU</text>
+<path d="M770.5999999999999,362 L770.5999999999999,143.7777777777778 q0,-4 4,-4 h74 q4,0 4,4 L852.5999999999999,362 Z" fill="#2a78d6"/>
+<text x="811.5999999999999" y="127.7777777777778" fill="#0e1726" font-size="16" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">8,192</text>
+<text x="811.5999999999999" y="161.7777777777778" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">25%</text>
+<text x="811.5999999999999" y="388" fill="#0e1726" font-size="13.5" font-weight="600" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">32 GB PC</text>
+<text x="811.5999999999999" y="407" fill="#8592ab" font-size="11" font-weight="400" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">16 cores</text>
+<text x="811.5999999999999" y="424" fill="#2a78d6" font-size="11" font-weight="600" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">4 vCPU</text>
+<path d="M976.1999999999999,362 L976.1999999999999,143.7777777777778 q0,-4 4,-4 h74 q4,0 4,4 L1058.1999999999998,362 Z" fill="#2a78d6"/>
+<text x="1017.1999999999999" y="127.7777777777778" fill="#0e1726" font-size="16" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">8,192</text>
+<text x="1017.1999999999999" y="161.7777777777778" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">12%</text>
+<text x="1017.1999999999999" y="388" fill="#0e1726" font-size="13.5" font-weight="600" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">64 GB PC</text>
+<text x="1017.1999999999999" y="407" fill="#8592ab" font-size="11" font-weight="400" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">16 cores</text>
+<text x="1017.1999999999999" y="424" fill="#2a78d6" font-size="11" font-weight="600" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace">4 vCPU</text>
+<line x1="948" y1="66" x2="970" y2="66" stroke="#55627a" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="5 4"/>
+<text x="978" y="70" fill="#55627a" font-size="11.5" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">half of that device</text>
+<rect x="40" y="444" width="1100" height="44" rx="10" fill="#f6f8fc" stroke="#d5dbe6" stroke-width="1" />
+<text x="58" y="471" fill="#55627a" font-size="13" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">A 4 GB PC is held at the guest minimum, which is also its ceiling. From 32 GB up the cap takes over, so the rest of the machine stays yours.</text>
+</svg>

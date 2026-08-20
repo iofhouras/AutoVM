@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How AutoVM decides things
+    url: https://github.com/iofhouras/AutoVM/blob/main/docs/agent-directive/KaliVMAgentDirective-v2.pdf
+    about: The design document — phases, gates, the failure playbook and the reasoning behind each decision.
+  - name: Architecture and how to add a guest
+    url: https://github.com/iofhouras/AutoVM/blob/main/docs/APPLICATION.md
+    about: How the wizard, the engine and the installer fit together.
+  - name: A security problem
+    url: https://github.com/iofhouras/AutoVM/security/advisories/new
+    about: Report it privately rather than in a public issue.
