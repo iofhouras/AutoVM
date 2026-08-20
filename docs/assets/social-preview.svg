@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640" role="img" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+<defs>
+  <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#3987e5" stop-opacity="0.30"/>
+    <stop offset="0.6" stop-color="#3987e5" stop-opacity="0.05"/>
+    <stop offset="1" stop-color="#3987e5" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="sw" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#3987e5"/>
+  </linearGradient>
+  <pattern id="sgrid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0 L0 0 0 40" fill="none" stroke="#2b3444" stroke-width="1" opacity="0.55"/>
+  </pattern>
+</defs>
+<rect x="0" y="0" width="1280" height="640" rx="0" fill="#0b1020" />
+<rect width="1280" height="640" fill="url(#sgrid)" opacity="0.5"/>
+<rect width="1280" height="640" fill="url(#sg)"/>
+<rect x="96" y="96" width="92" height="92" rx="20" fill="#0b1020" stroke="#2b3444" stroke-width="2" />
+<rect x="113.48" y="118.53999999999999" width="57.04" height="36.800000000000004" rx="5" fill="none" stroke="#3987e5" stroke-width="5" />
+<rect x="138.78" y="155.34" width="6.44" height="10.12" rx="0" fill="#3987e5" />
+<rect x="124.52" y="163.62" width="34.96" height="5.52" rx="3" fill="#3987e5" />
+<path d="M134.5112,125.9 L134.5112,147.98 L151.0712,136.94 Z" fill="#3fd69b"/>
+<text x="212" y="122" fill="#3987e5" font-size="15" font-weight="600" text-anchor="start" font-family="ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" letter-spacing="0.14em">WINDOWS  ·  ONE CLICK  ·  UNATTENDED</text>
+<text x="212" y="200" fill="url(#sw)" font-size="78" font-weight="800" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" letter-spacing="-0.02em">AutoVM</text>
+<text x="96" y="296" fill="#ffffff" font-size="40" font-weight="600" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Autonomously creates a virtual machine</text>
+<text x="96" y="348" fill="#ffffff" font-size="40" font-weight="600" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">of your choosing.</text>
+<text x="96" y="396" fill="#9aa8bf" font-size="20" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Type a login and a password. AutoVM measures the device, sizes a machine</text>
+<text x="96" y="426" fill="#9aa8bf" font-size="20" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">that fits, verifies the image, and installs it without a single prompt.</text>
+<rect x="96" y="470" width="250" height="92" rx="12" fill="#131b32" stroke="#2b3444" stroke-width="1" />
+<text x="120" y="522" fill="#ffffff" font-size="34" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">6</text>
+<text x="151" y="522" fill="#9aa8bf" font-size="16" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">screens</text>
+<rect x="358" y="470" width="250" height="92" rx="12" fill="#131b32" stroke="#2b3444" stroke-width="1" />
+<text x="382" y="522" fill="#ffffff" font-size="34" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">7</text>
+<text x="413" y="522" fill="#9aa8bf" font-size="16" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">phases</text>
+<rect x="620" y="470" width="250" height="92" rx="12" fill="#131b32" stroke="#2b3444" stroke-width="1" />
+<text x="644" y="522" fill="#ffffff" font-size="34" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">65</text>
+<text x="696" y="522" fill="#9aa8bf" font-size="16" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">tests</text>
+<rect x="882" y="470" width="250" height="92" rx="12" fill="#131b32" stroke="#2b3444" stroke-width="1" />
+<text x="906" y="522" fill="#ffffff" font-size="34" font-weight="700" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">0</text>
+<text x="937" y="522" fill="#9aa8bf" font-size="16" font-weight="400" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">installer questions</text>
+</svg>

@@ -1,0 +1,72 @@
+name: A build stopped
+description: AutoVM stopped part-way through creating a virtual machine.
+title: "Build stopped at "
+labels: ["build"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        AutoVM names the step it stopped on and writes a full log. Both are worth more than a
+        description of the symptom, so please attach them.
+
+        **Before you post:** open `C:\ProgramData\AutoVM\logs`, take the newest `.log`, and skim
+        it for your password. AutoVM masks it, but check anyway — you are pasting into a public
+        issue.
+
+  - type: input
+    id: phase
+    attributes:
+      label: Which step did it stop on?
+      description: The final screen names it, e.g. "Phase 4 of 7 - downloading Kali Linux".
+      placeholder: Phase 5 of 7 - building the virtual machine
+    validations:
+      required: true
+
+  - type: textarea
+    id: message
+    attributes:
+      label: What did it say?
+      description: The message from the last screen, copied as text.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: log
+    attributes:
+      label: The tail of the log
+      description: The last 50 or so lines of the newest file in `C:\ProgramData\AutoVM\logs`.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: device
+    attributes:
+      label: The device
+      description: |
+        Run this in PowerShell and paste the result. It is the same read-only profile AutoVM
+        takes on its second screen, and it contains no personal data.
+      value: |
+        Import-Module 'C:\Program Files\AutoVM\AutoVM\AutoVM.psd1'
+        Get-AutoVMHostProfile | ConvertTo-Json -Depth 4
+      render: json
+    validations:
+      required: true
+
+  - type: dropdown
+    id: guest
+    attributes:
+      label: Which system were you building?
+      options: [Kali Linux, Debian, Other]
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked the log for anything I would not want to publish.
+          required: true
+        - label: I ran AutoVM again, and it stopped the same way.
