@@ -8,7 +8,7 @@ How the pieces fit, why they are split that way, and where to change things.
   AutoVM.exe                 C# launcher. Icon, single elevation prompt, starts the host.
       │
       ▼
-  AutoVM.ps1                 WPF wizard. Six screens, no engine logic of its own.
+  AutoVM.ps1                 WPF window. Four surfaces, no engine logic of its own.
       │  runspace + queue
       ▼
   AutoVM (module)            The engine. Seven phases, gates, planning, VirtualBox driver.
@@ -40,12 +40,13 @@ none. That is what lets the same code path serve a wizard, a script and CI.
 | `10-Image.ps1` | Resumable download and mandatory verification |
 | `11-Teardown.ps1` | Optional removal, protected classes, the consent check |
 | `12-Handover.ps1` | Control panel, shortcut, the plain-language summary |
+| `13-Manage.ps1` | Everything after the build: machine list, hardware changes, snapshots, shared folders, export, removal |
 | `Public/Invoke-AutoVMBuild.ps1` | Phase orchestration |
 
 Anything that can be pure, is: `New-AutoVMPlan`, `Test-AutoVMGate`, `Test-AutoVMUserName`,
-`New-AutoVMPreseed`, `Select-AutoVMIsoName`, `Test-AutoVMProtectedPath`. That is deliberate — it
-is the difference between a test suite that runs on any machine in two seconds and one that needs
-a hypervisor.
+`New-AutoVMPreseed`, `Select-AutoVMIsoName`, `Test-AutoVMProtectedPath`, `Test-AutoVMSettingChange`,
+`ConvertFrom-AutoVMSnapshotList`. That is deliberate — it is the difference between a test suite
+that runs on any machine in two seconds and one that needs a hypervisor.
 
 ## Phases
 
@@ -64,6 +65,23 @@ proved. The orchestrator records the outcome in `state.json` before moving on.
 
 A phase that cannot prove its exit condition fails. It does not assume, and it does not continue.
 
+## The four surfaces
+
+| Surface | What it is |
+| --- | --- |
+| **Create** | System choice, login, password, and the `Create VM Now!` button. The device check runs in the background while the user types; the bar along the bottom shows what AutoVM has decided for this machine before anything is committed. |
+| **Building** | Progress, elapsed time and the live log, fed by the engine's progress sink. |
+| **Ready** | The handover note, and the way through to Manage. |
+| **Manage** | Machine list plus four tabs: Overview (state and power), Settings (hardware and clipboard), Restore points, Files & data (shared folders, export, delete). |
+
+If a machine already exists when AutoVM starts, it opens on **Manage** rather than Create — the
+application is a console for what is already there as much as a way to make something new.
+
+Hardware changes go through `Test-AutoVMSettingChange` before they reach VirtualBox. It applies the
+same ceiling a new build gets — never more than half the host's memory — because a machine edited
+into swapping the host to death is no better than one that was built that way. It refuses changes
+while the machine is running, and it warns without refusing when a value is merely uncomfortable.
+
 ## Threading in the wizard
 
 WPF needs a single-threaded apartment and a responsive dispatcher; the build takes up to an hour.
@@ -80,6 +98,11 @@ DispatcherTimer (220 ms)  ◄── queue ◄──── progress sink
 
 `ConcurrentQueue` is the only shared state. The worker never touches a control, the UI never
 blocks on the engine, and closing the window stops the runspace after asking.
+
+The same machinery carries the long management operations — taking a restore point, restoring one,
+deleting one, exporting to `.ova`, deleting a machine — behind a busy veil. Quick calls (listing
+machines, reading snapshots, starting, stopping, applying settings) run inline, because a runspace
+costs more than the call does.
 
 ## Handling of the password
 
@@ -131,8 +154,14 @@ application into `dist/staging`, and compiles that with Inno Setup into a single
 `AutoVM-Setup-<version>.exe`.
 
 CI runs the test suite on Linux, builds the installer on Windows, re-runs the tests there, loads
-the engine under Windows PowerShell 5.1, and uploads the installer. Pushing a `v*` tag publishes
-it as a release.
+the engine under Windows PowerShell 5.1, and uploads the installer. It also publishes a copy named
+`AutoVM-Setup.exe` without the version, so that
+`releases/latest/download/AutoVM-Setup.exe` is a permanent download link — which is what the
+website's button points at. Pushing a `v*` tag publishes the release.
+
+`.github/workflows/pages.yml` deploys `site/` to GitHub Pages, copying `docs/assets/` in beside it
+so the page and the README share one set of figures. It fails the build if `index.html` references
+an asset that was not assembled.
 
 ## What is not covered by tests
 

@@ -206,16 +206,14 @@ def flow(t):
     W, H = 1280, 430
     b = [rect(0, 0, W, H, t["canvas"])]
 
-    b.append(label(40, 40, "what you do  ·  six screens", t["accent"]))
+    b.append(label(40, 40, "what you do", t["accent"]))
     steps = [
-        ("1", "Welcome", "read what it will do"),
-        ("2", "This device", "it checks and reports"),
-        ("3", "Your account", "login + password"),
-        ("4", "Review", "nothing changed yet"),
-        ("5", "Building", "leave it running"),
-        ("6", "Ready", "control panel on desktop"),
+        ("1", "Pick a system", "Kali Linux, or Debian"),
+        ("2", "Type a login", "username and password"),
+        ("3", "Create VM Now!", "press the button, walk away"),
+        ("4", "Manage it", "power, hardware, snapshots, files"),
     ]
-    bw, gap = 182, 18
+    bw, gap = 282, 18
     x = 40
     for i, (n, title, sub) in enumerate(steps):
         fill = t["panel"]
@@ -382,54 +380,43 @@ def architecture(t):
 
 # ------------------------------------------------------------------- app shell
 A = APP
-CW, CH = 920, 668          # client area, matching the real window
-SIDE = 228
-CX = SIDE + 34             # content left edge
-CWID = CW - CX - 34
+CW, CH = 1020, 720          # client area, matching the real window
+SIDE = 236
+CX = SIDE + 30              # content left edge
+CWID = CW - CX - 30
 
 
-def app_shell(step, body, next_label="Continue", back=True, footer="", top=32):
-    """Sidebar + footer chrome shared by every wizard mockup."""
-    steps = ["Welcome", "This device", "Your account", "Review", "Building", "Ready"]
-    out = [rect(0, top, CW, CH, A["ink"])]
-    out.append(rect(0, top, SIDE, CH, A["side"]))
+def app_shell(active, body, top=32, side_state=("No machine yet", "Create one from the first screen.")):
+    """Sidebar chrome shared by every mockup. `active` is 'create' or 'manage'."""
+    out = [rect(0, top, CW, CH, A["ink"]), rect(0, top, SIDE, CH, A["side"])]
 
-    out.append(text(24, top + 44, "AutoVM", A["text"], 21, 700))
-    out.append(text(24, top + 62, "virtual machines, set up for you", A["muted"], 10.5))
+    out.append(text(22, top + 42, "AutoVM", A["text"], 22, 700))
+    out.append(text(22, top + 60, "virtual machines, set up for you", A["faint"], 10.5))
 
-    y = top + 100
-    for i, s in enumerate(steps):
-        if i < step:
-            colour, mark = A["ok"], "✓"
-        elif i == step:
-            colour, mark = A["text"], str(i + 1)
-        else:
-            colour, mark = A["muted"], str(i + 1)
-        out.append(mono(24, y, mark, colour, 12, 700))
-        out.append(mono(46, y, s, colour, 12.5, 600 if i == step else 400))
-        y += 26
+    for i, (key, lab) in enumerate((("create", "\u002b   Create a machine"), ("manage", "\u25a4   My machines"))):
+        on = key == active
+        y = top + 84 + i * 46
+        out.append(rect(22, y, SIDE - 44, 38, "#1e2c4e" if on else A["panel2"], r=6,
+                        stroke=A["accent"] if on else A["line"], sw=1))
+        out.append(text(36, y + 24, lab, A["text"], 13, 600 if on else 400))
 
-    out.append(line_(24, y + 12, SIDE - 24, y + 12, A["line"], 1))
-    out.append(text(24, y + 36, "AutoVM leaves your machines and", A["faint"], 10.5))
-    out.append(text(24, y + 51, "your security settings alone unless", A["faint"], 10.5))
-    out.append(text(24, y + 66, "you tell it otherwise.", A["faint"], 10.5))
+    out.append(label(22, top + 208, "status", A["muted"], 10))
+    out.append(rect(22, top + 216, SIDE - 44, 58, "#101830", r=7, stroke=A["line"], sw=1))
+    out.append(text(36, top + 240, side_state[0], A["text"], 12.5))
+    out.append(text(36, top + 258, side_state[1], A["muted"], 10.5))
+
+    out.append(line_(22, top + CH - 96, SIDE - 22, top + CH - 96, A["line"], 1))
+    out.append(text(22, top + CH - 74, "AutoVM leaves your other machines", A["faint"], 10.5))
+    out.append(text(22, top + CH - 59, "and your Windows security settings", A["faint"], 10.5))
+    out.append(text(22, top + CH - 44, "alone.", A["faint"], 10.5))
+    out.append(mono(22, top + CH - 22, "v1.1.0", "#4e5d7c", 10))
 
     out.append(body)
-
-    fy = top + CH - 52
-    if footer:
-        out.append(text(CX, fy + 20, footer, A["faint"], 11.5))
-    out.append(rect(CW - 34 - 168, fy, 168, 36, A["accent"], r=6))
-    out.append(text(CW - 34 - 84, fy + 23, next_label, "#ffffff", 13, 600, anchor="middle"))
-    out.append(rect(CW - 34 - 168 - 122, fy, 112, 36, A["panel2"], r=6, stroke=A["line"], sw=1,
-                    opacity=1 if back else 0.4))
-    out.append(text(CW - 34 - 168 - 66, fy + 23, "Back", A["text"], 13, 400, anchor="middle",
-                    opacity=1 if back else 0.4))
     return "".join(out)
 
 
 def head(y, title, deck_lines):
-    out = [text(CX, y, title, A["text"], 24, 600)]
+    out = [text(CX, y, title, A["text"], 25, 600)]
     yy = y + 26
     for l in deck_lines:
         out.append(text(CX, yy, l, A["muted"], 13))
@@ -437,179 +424,101 @@ def head(y, title, deck_lines):
     return "".join(out), yy
 
 
-def field(x, y, w, lab, value, placeholder=False, hint=None, hint_colour=None):
-    out = [label(x, y, lab, A["muted"], 10),
-           rect(x, y + 8, w, 34, A["field"], r=5, stroke=A["line"], sw=1),
-           text(x + 11, y + 30, value, A["faint"] if placeholder else A["text"], 14)]
-    if hint:
-        out.append(text(x, y + 60, hint, hint_colour or A["muted"], 11.5))
-    return "".join(out)
+def field(x, y, w, lab, value, placeholder=False):
+    return "".join([
+        text(x, y, lab, A["muted"], 11.5),
+        rect(x, y + 8, w, 34, A["field"], r=5, stroke=A["line"], sw=1),
+        text(x + 11, y + 30, value, A["faint"] if placeholder else A["text"], 14),
+    ])
 
 
 def app_svg(body, w=CW, h=CH + 32, title="AutoVM"):
     return svg(w, h, window_chrome(0, 0, w, h, title) + body)
 
 
-# ---------------------------------------------------------------- 1 · welcome
-def screen_welcome():
-    b, y = head(80, "Set up a Linux virtual machine", [
-        "AutoVM looks at this computer, works out a machine that will run well on it,",
-        "downloads a verified system image, and installs it without you having to answer",
-        "installer questions. You choose the login and password; everything else is decided.",
+# ------------------------------------------------------------------- 1 create
+def screen_create():
+    b, y = head(78, "Create a virtual machine", [
+        "Pick a system, choose the login you want inside it, and press the button. AutoVM handles",
+        "the rest \u2014 the hypervisor, the download, the installation and the setup.",
     ])
     y += 18
-    b += rect(CX, y, CWID, 132, A["panel"], r=8, stroke=A["line"], sw=1)
-    b += text(CX + 20, y + 28, "What happens next", A["text"], 13.5, 600)
-    rows = [
-        "1.  AutoVM checks that this computer can run a virtual machine at all.",
-        "2.  You pick the system and type the login and password you want inside it.",
-        "3.  You see exactly what will be created before anything is installed.",
-        "4.  AutoVM builds it and puts a control panel on your desktop.",
-    ]
-    yy = y + 54
-    for r in rows:
-        b += text(CX + 20, yy, r, A["muted"], 12.5)
-        yy += 21
-    y += 148
-    b += rect(CX, y, CWID, 76, "#1b2038", r=8, stroke="#3a3050", sw=1)
-    b += text(CX + 18, y + 28, "AutoVM needs administrator rights to install the virtualization software, and it", A["muted"], 12.5)
-    b += text(CX + 18, y + 47, "downloads several gigabytes. It will not change your firewall, your Windows security", A["muted"], 12.5)
-    b += text(CX + 18, y + 66, "settings, or any virtual machine you already have.", A["muted"], 12.5)
-    return app_svg(app_shell(0, b, "Get started", back=False))
 
+    b += label(CX, y, "choose a system", A["muted"], 10)
+    y += 12
+    cw = (CWID - 14) / 2
+    for i, (title, blurb, spec, on) in enumerate([
+        ("Kali Linux Virtual Machine", "Security distribution with the Xfce desktop. The usual choice.",
+         "about 60 minutes \u00b7 ~4 GB download", True),
+        ("Debian Virtual Machine", "Plain Debian with a desktop. Smaller and quicker to install.",
+         "about 30 minutes \u00b7 ~0.7 GB download", False),
+    ]):
+        x = CX + i * (cw + 14)
+        b += rect(x, y, cw, 92, "#16233f" if on else A["panel"], r=10,
+                  stroke=A["accent"] if on else A["line"], sw=2)
+        b += f'<circle cx="{x + 24}" cy="{y + 26}" r="6" fill="{A["accent"] if on else "#33405e"}"/>'
+        b += text(x + 40, y + 31, title, A["text"], 15, 600)
+        b += text(x + 40, y + 52, blurb, A["muted"], 11.5)
+        b += mono(x + 40, y + 70, spec, A["faint"], 10.5)
+    y += 108
 
-# ----------------------------------------------------------------- 2 · device
-def screen_device():
-    b, y = head(80, "This device", ["Ready, with a trade-off to confirm: G5"])
-    y += 14
-    listw = CWID - 236
-    b += rect(CX, y, listw, 420, A["panel"], r=8, stroke=A["line"], sw=1)
+    b += label(CX, y, "your login inside the machine", A["muted"], 10)
+    y += 22
+    half = (CWID - 14) / 2
+    b += field(CX, y, half, "Username", "Analyst")
+    b += text(CX, y + 62, "You will sign in as 'Analyst'. Created as 'analyst', renamed after install.", A["warn"], 11)
+    b += field(CX + half + 14, y, half, "Machine name (optional)", "AutoVM-kali", placeholder=True)
+    b += text(CX + half + 14, y + 62, "How it is listed in VirtualBox.", A["muted"], 11)
+    y += 82
 
-    gates = [
-        ("✓", A["ok"], "Hardware virtualization enabled", "VirtualizationFirmwareEnabled = True", None),
-        ("✓", A["ok"], "Second level address translation", "SLAT = Extended Page Tables", None),
-        ("✓", A["ok"], "Sufficient host memory", "8 GB installed, 6 GB required", None),
-        ("✓", A["ok"], "Free disk space", "best fixed volume has 240 GB free", None),
-        ("!", A["warn"], "Exclusive use of the extensions", "VBS running, Memory Integrity on",
-         "Runs in a slower hosted mode. AutoVM leaves those protections on."),
-        ("✓", A["ok"], "Administrator rights", "elevated = True", None),
-    ]
-    yy = y + 40
-    for mark, colour, title, detail, advice in gates:
-        b += text(CX + 16, yy, mark, colour, 13, 700)
-        b += text(CX + 38, yy, title, A["text"], 12.5)
-        b += mono(CX + 38, yy + 15, detail, A["faint"], 10.5)
-        if advice:
-            b += text(CX + 38, yy + 31, advice, colour, 11)
-            yy += 18
-        yy += 58
-
-    fx = CX + listw + 16
-    b += rect(fx, y, 220, 196, A["panel"], r=8, stroke=A["line"], sw=1)
-    facts = [("device", "ThinkPad L14"), ("memory", "8 GB installed"),
-             ("processor", "8 logical cores"), ("free space", "240 GB free on C:")]
-    yy = y + 30
-    for lab, val in facts:
-        b += label(fx + 18, yy, lab, A["muted"], 10)
-        b += text(fx + 18, yy + 20, val, A["text"], 13)
-        yy += 44
-    b += rect(fx, y + 210, 220, 34, A["panel2"], r=6, stroke=A["line"], sw=1)
-    b += text(fx + 110, y + 232, "Check again", A["text"], 12.5, anchor="middle")
-
-    return app_svg(app_shell(1, b, footer="You can continue — the trade-off is recorded in the build report."))
-
-
-# ---------------------------------------------------------------- 3 · account
-def screen_account():
-    b, y = head(80, "Your account inside the machine", [
-        "This is the login you will use every time you start the virtual machine.",
-        "AutoVM does not store the password anywhere.",
-    ])
-    y += 16
-    b += label(CX, y, "system", A["muted"], 10)
-    b += f'<circle cx="{CX + 7}" cy="{y + 22}" r="7" fill="none" stroke="{A["accent"]}" stroke-width="1.6"/>'
-    b += f'<circle cx="{CX + 7}" cy="{y + 22}" r="3.4" fill="{A["accent"]}"/>'
-    b += text(CX + 22, y + 26, "Kali Linux", A["text"], 13)
-    b += f'<circle cx="{CX + 132}" cy="{y + 22}" r="7" fill="none" stroke="{A["muted"]}" stroke-width="1.6"/>'
-    b += text(CX + 147, y + 26, "Debian", A["text"], 13)
-    b += text(CX, y + 50, "Debian-derived security distribution with the Xfce desktop  -  about 60 minutes to install.",
-              A["muted"], 12)
-
-    y += 76
-    half = (CWID - 26) / 2
-    b += field(CX, y, half, "login name", "Analyst")
-    b += text(CX, y + 60,
-              "Created as 'analyst', renamed to 'Analyst' after install.", A["warn"], 11.5)
-    b += field(CX + half + 26, y, half, "machine name (optional)", "AutoVM-kali", placeholder=True)
-    b += text(CX + half + 26, y + 60, "How the machine is listed in VirtualBox.", A["muted"], 11.5)
-
-    y += 92
-    b += field(CX, y, half, "password", "•" * 12)
+    b += field(CX, y, half, "Password", "\u2022" * 12)
     b += rect(CX, y + 50, half, 5, A["field"], r=3)
     b += rect(CX, y + 50, half * 0.8, 5, A["ok"], r=3)
-    b += text(CX, y + 74, "Strength: strong.", A["ok"], 11.5)
-    b += field(CX + half + 26, y, half, "confirm password", "•" * 12)
+    b += text(CX, y + 72, "Strength: strong.", A["ok"], 11)
+    b += field(CX + half + 14, y, half, "Confirm password", "\u2022" * 12)
+    y += 92
 
-    y += 106
-    b += rect(CX, y, CWID, 52, "#1b2038", r=8, stroke="#3a3050", sw=1)
-    b += text(CX + 18, y + 22, "Linux logins are case-sensitive. Whatever you type here is exactly what", A["muted"], 12.5)
-    b += text(CX + 18, y + 40, "you will type to sign in.", A["muted"], 12.5)
-    return app_svg(app_shell(2, b))
+    b += rect(CX, y, CWID, 46, "#1b2038", r=8, stroke="#3a3050", sw=1)
+    b += text(CX + 16, y + 20, "Linux logins are case-sensitive \u2014 you will sign in with exactly what you type here.", A["muted"], 12)
+    b += text(CX + 16, y + 36, "AutoVM never stores your password; it goes straight into the installation and is then erased.", A["muted"], 12)
+    y += 58
 
+    b += text(CX, y + 14, "\u25b8  What AutoVM found on this device", A["muted"], 12.5)
 
-# ----------------------------------------------------------------- 4 · review
-def screen_review():
-    b, y = head(80, "Before anything is installed", ["This is what AutoVM will create on this device."])
-    y += 16
-    b += rect(CX, y, CWID, 140, A["panel"], r=8, stroke=A["line"], sw=1)
-    left = [("system", "Kali Linux (Light package set)"),
-            ("memory given to the machine", "3072 MB  -  38% of this device"),
-            ("processors", "4 of 8 logical cores")]
-    right = [("disk", "up to 60 GB on drive C:  (grows as needed)"),
-             ("sign in as", "Analyst"), ("estimated time", "about 60 minutes")]
-    for col, items in ((CX + 20, left), (CX + CWID / 2 + 4, right)):
-        yy = y + 30
-        for lab, val in items:
-            b += label(col, yy, lab, A["muted"], 9.5)
-            b += text(col, yy + 20, val, A["text"], 12.5)
-            yy += 44
-
-    y += 154
-    warnings = [
-        "The light desktop package set was chosen automatically to fit this device.",
-        "Windows virtualization-based security is active, so the guest runs in a slower mode.",
-    ]
-    for w in warnings:
-        b += rect(CX, y, CWID, 34, "#241e12", r=7, stroke="#4b3b1b", sw=1)
-        b += text(CX + 16, y + 22, w, A["warn"], 12)
-        y += 42
-
-    b += rect(CX, y, CWID, 34, A["panel"], r=7, stroke=A["line"], sw=1)
-    b += text(CX + 16, y + 22, "▸   Remove virtual machines already on this device", A["muted"], 12.5)
-    b += mono(CX + CWID - 76, y + 22, "off", A["faint"], 11, 600)
-    return app_svg(app_shell(3, b, "Build my machine", footer="Nothing has been changed on this device yet."))
+    # the action bar
+    ay = 32 + CH - 116
+    b += rect(CX, ay, CWID, 84, A["panel"], r=10, stroke=A["line"], sw=1)
+    b += text(CX + 18, ay + 34, "AutoVM will build Kali Linux with 3072 MB of memory, 4 processors", A["text"], 13)
+    b += text(CX + 18, ay + 52, "and up to 60 GB of disk on drive C:.", A["text"], 13)
+    b += text(CX + 18, ay + 70, "About 60 minutes. That is 38% of this computer's memory, so the rest stays yours.", A["muted"], 11)
+    bw = 208
+    b += rect(CX + CWID - bw - 18, ay + 18, bw, 48, A["accent"], r=6)
+    b += text(CX + CWID - bw / 2 - 18, ay + 48, "Create VM Now!", "#ffffff", 15.5, 700, anchor="middle")
+    return app_svg(app_shell("create", b))
 
 
-# --------------------------------------------------------------- 5 · building
+# ----------------------------------------------------------------- 2 building
 def screen_building(animate=True):
-    b, y = head(80, "Building your machine", [
-        "You can leave this running. Keep the computer awake and plugged in."])
+    b, y = head(78, "Building your machine", [
+        "You can leave this running and use the computer for other things.",
+        "Keep it awake and plugged in.",
+    ])
     y += 20
     pct = 0.62
-    b += rect(CX, y, CWID, 8, A["field"], r=4)
+    b += rect(CX, y, CWID, 9, A["field"], r=5)
     if animate:
-        b += (f'<rect x="{CX}" y="{y}" width="{CWID * pct}" height="8" rx="4" fill="{A["accent"]}">'
+        b += (f'<rect x="{CX}" y="{y}" width="{CWID * pct}" height="9" rx="5" fill="{A["accent"]}">'
               f'<animate attributeName="width" values="{CWID * 0.44};{CWID * pct};{CWID * 0.44}" '
               f'dur="9s" repeatCount="indefinite" calcMode="spline" '
               f'keySplines="0.4 0 0.2 1;0.4 0 0.2 1" keyTimes="0;0.55;1"/></rect>')
     else:
-        b += rect(CX, y, CWID * pct, 8, A["accent"], r=4)
+        b += rect(CX, y, CWID * pct, 9, A["accent"], r=5)
 
-    b += text(CX, y + 30, "Installing - 00:24:31 elapsed, machine is running", A["text"], 13)
-    b += mono(CX + CWID, y + 30, "00:41:07", A["muted"], 12, anchor="end")
+    b += text(CX, y + 32, "Installing - 00:24:31 elapsed, machine is running", A["text"], 13)
+    b += mono(CX + CWID, y + 32, "00:41:07", A["muted"], 12, anchor="end")
 
-    y += 48
-    logh = CH - y - 76
+    y += 50
+    logh = CH - y - 60
     b += rect(CX, y, CWID, logh, "#070c18", r=8, stroke=A["line"], sw=1)
     log = [
         ("09:19:12", "P1 PASS - created 1, destroyed 0, elapsed 00:04:12", A["ok"]),
@@ -631,47 +540,161 @@ def screen_building(animate=True):
         b += mono(CX + 16, yy, stamp, A["faint"], 10.5)
         b += mono(CX + 84, yy, msg, colour, 10.5)
         yy += 18
-    return app_svg(app_shell(4, b, "Building...", back=False))
+    return app_svg(app_shell("create", b, side_state=("Building AutoVM-kali", "phase 5 of 7")))
 
 
-# ------------------------------------------------------------------ 6 · ready
+# -------------------------------------------------------------------- 3 ready
 def screen_ready():
-    b, y = head(80, "Your machine is ready", ["Finished in 01:07:44."])
+    b, y = head(78, "Your machine is ready", ["Finished in 01:07:44."])
     y += 16
-    notew = CWID - 220
-    b += rect(CX, y, notew, 300, A["panel"], r=8, stroke=A["line"], sw=1)
+    noteh = CH - y - 96
+    b += rect(CX, y, CWID, noteh, A["panel"], r=10, stroke=A["line"], sw=1)
     note = [
         ("Your Kali Linux virtual machine is ready.", A["text"]),
         ("", None),
-        ("Start it        Double-click 'AutoVM Control Center' on your", A["muted"]),
-        ("                desktop, then Start (Window).", A["muted"]),
-        ("Sign in as      Analyst  - exactly as typed. Linux logins are", A["text"]),
-        ("                case-sensitive.", A["text"]),
+        ("Start it        Press Manage my machine below, or use the AutoVM Control Center", A["muted"]),
+        ("                shortcut on your desktop.", A["muted"]),
+        ("Sign in as      Analyst  - exactly as typed. Linux logins are case-sensitive.", A["text"]),
         ("Password        the one you chose. AutoVM did not keep a copy.", A["muted"]),
-        ("Shut it down    Use Shut Down in the control panel.", A["muted"]),
-        ("Undo changes    Restore to first-boot state discards everything", A["muted"]),
-        ("                saved inside the machine since the build.", A["muted"]),
+        ("Shut it down    Use Shut down on the management screen.", A["muted"]),
+        ("Undo changes    Restore to first-boot state discards everything saved inside", A["muted"]),
+        ("                the machine since the build.", A["muted"]),
         ("", None),
         ("Memory          3072 MB, about 38% of this device.", A["muted"]),
-        ("Network         Outbound only. Nothing can reach into the guest,", A["warn"]),
-        ("                which is why a simple password is acceptable.", A["warn"]),
+        ("Network         Outbound only. Nothing can reach into the guest, which is why", A["warn"]),
+        ("                a simple password is acceptable.", A["warn"]),
     ]
-    yy = y + 28
+    yy = y + 30
     for lineText, colour in note:
         if lineText:
             b += mono(CX + 20, yy, lineText, colour, 10.5)
-        yy += 18
+        yy += 19
 
-    bx = CX + notew + 16
-    buttons = [("Open the control panel", A["accent"], "#ffffff"),
-               ("Show the build log", A["panel2"], A["text"]),
-               ("Copy these notes", A["panel2"], A["text"])]
-    yy = y
-    for lab, bg, fg in buttons:
-        b += rect(bx, yy, 204, 38, bg, r=6, stroke=None if bg == A["accent"] else A["line"], sw=1)
-        b += text(bx + 102, yy + 24, lab, fg, 12.5, 600 if bg == A["accent"] else 400, anchor="middle")
-        yy += 48
-    return app_svg(app_shell(5, b, "Finish", back=False))
+    ay = y + noteh + 16
+    for lab, w, primary in (("Copy these notes", 150, False), ("Show the log", 120, False),
+                            ("Manage my machine", 190, True)):
+        pass
+    x = CX + CWID
+    for lab, w, primary in reversed([("Copy these notes", 150, False), ("Show the log", 124, False),
+                                     ("Manage my machine", 196, True)]):
+        x -= w
+        b += rect(x, ay, w, 40, A["accent"] if primary else A["panel2"], r=6,
+                  stroke=None if primary else A["line"], sw=1)
+        b += text(x + w / 2, ay + 25, lab, "#ffffff" if primary else A["text"], 13,
+                  600 if primary else 400, anchor="middle")
+        x -= 10
+    return app_svg(app_shell("create", b, side_state=("AutoVM-kali", "poweroff \u00b7 3072 MB \u00b7 4 vCPU")))
+
+
+# ------------------------------------------------------------- 4 manage pages
+def manage_frame(active_tab, state="running"):
+    """Header, machine list and tab strip shared by the management mockups."""
+    b, _ = head(78, "My machines", ["Start, adjust, snapshot and share files with the machines AutoVM built."])
+    b += rect(CX + CWID - 92, 62, 92, 32, A["panel2"], r=6, stroke=A["line"], sw=1)
+    b += text(CX + CWID - 46, 83, "Refresh", A["text"], 12.5, anchor="middle")
+
+    ly = 140
+    lh = CH - ly - 8
+    b += rect(CX, ly, 242, lh, A["panel"], r=10, stroke=A["line"], sw=1)
+    b += rect(CX + 8, ly + 8, 226, 44, "#1b2743", r=6)
+    b += f'<circle cx="{CX + 24}" cy="{ly + 30}" r="4.5" fill="{A["ok"] if state == "running" else A["bad"]}"/>'
+    b += text(CX + 38, ly + 26, "AutoVM-kali", A["text"], 13, 600)
+    b += mono(CX + 38, ly + 42, f"{state} \u00b7 3072 MB \u00b7 4 vCPU", A["faint"], 10.5)
+
+    tx = CX + 258
+    tw = CWID - 258
+    tabs = ["Overview", "Settings", "Restore points", "Files & data"]
+    x = tx
+    for tab in tabs:
+        w = len(tab) * 7.6 + 28
+        on = tab == active_tab
+        b += text(x + w / 2, ly + 22, tab, A["text"] if on else A["muted"], 13,
+                  600 if on else 400, anchor="middle")
+        if on:
+            b += rect(x, ly + 32, w, 2, A["accent"])
+        x += w
+    b += line_(tx, ly + 33, tx + tw, ly + 33, A["line"], 1)
+    return b, tx, tw, ly + 48
+
+
+def screen_manage():
+    b, tx, tw, y = manage_frame("Overview")
+
+    b += rect(tx, y, tw, 150, A["panel"], r=10, stroke=A["line"], sw=1)
+    cols = [
+        [("state", "running", A["ok"], 17), ("sign in as", "Analyst", A["text"], 13),
+         ("system", "Kali GNU/Linux", A["text"], 13)],
+        [("hardware", "3072 MB \u00b7 4 processors \u00b7 128 MB video", A["text"], 13),
+         ("disk in use", "18.4 GB", A["text"], 13), ("address on its network", "10.0.2.15", A["text"], 13)],
+    ]
+    for i, col in enumerate(cols):
+        cx = tx + 20 + i * (tw / 2 - 10)
+        yy = y + 30
+        for lab, val, colour, size in col:
+            b += label(cx, yy, lab, A["muted"], 9.5)
+            b += text(cx, yy + 22, val, colour, size, 600 if size > 14 else 400)
+            yy += 44
+
+    py = y + 164
+    b += rect(tx, py, tw, 222, A["panel"], r=10, stroke=A["line"], sw=1)
+    b += label(tx + 18, py + 26, "power", A["muted"], 9.5)
+    buttons = [("Start the machine", 152, True), ("Start in the background", 176, False),
+               ("Shut down", 104, False), ("Save state", 106, False),
+               ("Force off", 96, "danger"), ("Open VirtualBox Manager", 190, False)]
+    bx, by = tx + 18, py + 38
+    for lab, w, kind in buttons:
+        if bx + w > tx + tw - 18:
+            bx = tx + 18
+            by += 46
+        fill = A["accent"] if kind is True else ("#3a2028" if kind == "danger" else A["panel2"])
+        fg = "#ffffff" if kind is True else ("#ffb3a7" if kind == "danger" else A["text"])
+        b += rect(bx, by, w, 38, fill, r=6, stroke=None if kind is True else (A["line"] if kind != "danger" else "#5e2e38"), sw=1)
+        b += text(bx + w / 2, by + 24, lab, fg, 12.5, 600 if kind is True else 400, anchor="middle")
+        bx += w + 10
+    b += text(tx + 18, by + 62, "Shut down asks the guest to close cleanly. Save state freezes it exactly as it is.", A["muted"], 11)
+    b += text(tx + 18, by + 78, "Force off is the equivalent of pulling the plug.", A["muted"], 11)
+    return app_svg(app_shell("manage", b, side_state=("AutoVM-kali", "running \u00b7 3072 MB \u00b7 4 vCPU")))
+
+
+def screen_manage_settings():
+    b, tx, tw, y = manage_frame("Settings", state="poweroff")
+
+    b += rect(tx, y, tw, 200, A["panel"], r=10, stroke=A["line"], sw=1)
+    third = (tw - 40 - 32) / 3
+    for i, (lab, val, hint) in enumerate([
+        ("memory (mb)", "3072", "1024 \u2013 4096 on this device"),
+        ("processors", "4", "1 \u2013 8 on this device"),
+        ("video memory (mb)", "128", "16 \u2013 256"),
+    ]):
+        x = tx + 20 + i * (third + 16)
+        b += label(x, y + 28, lab, A["muted"], 9.5)
+        b += rect(x, y + 36, third, 34, A["field"], r=5, stroke=A["line"], sw=1)
+        b += text(x + 11, y + 58, val, A["text"], 14)
+        b += text(x, y + 86, hint, A["muted"], 11)
+
+    b += label(tx + 20, y + 116, "shared clipboard", A["muted"], 9.5)
+    b += rect(tx + 20, y + 124, 260, 32, A["field"], r=5, stroke=A["line"], sw=1)
+    b += text(tx + 32, y + 145, "Both directions", A["text"], 13)
+    b += text(tx + 296, y + 145, "\u25be", A["muted"], 12)
+    b += text(tx + 20, y + 170, "The clipboard is a path between Windows and the machine.", A["muted"], 11)
+    b += text(tx + 20, y + 185, "Turn it off if the machine will handle anything untrusted.", A["muted"], 11)
+
+    ay = y + 216
+    b += rect(tx, ay, 150, 40, A["accent"], r=6)
+    b += text(tx + 75, ay + 25, "Apply changes", "#ffffff", 13, 600, anchor="middle")
+    b += text(tx + 164, ay + 25, "Saved.", A["ok"], 12)
+
+    ny = ay + 58
+    b += rect(tx, ny, tw, 116, A["panel"], r=10, stroke=A["line"], sw=1)
+    b += label(tx + 18, ny + 26, "network", A["muted"], 9.5)
+    for i, lineText in enumerate([
+            "This machine reaches out through your connection, and",
+            "nothing on your network can reach into it. AutoVM does not",
+            "offer bridged networking or port forwarding, because that is",
+            "what makes a simple guest password safe.",
+    ]):
+        b += text(tx + 18, ny + 48 + i * 17, lineText, A["text"], 12.5)
+    return app_svg(app_shell("manage", b, side_state=("AutoVM-kali", "poweroff \u00b7 3072 MB \u00b7 4 vCPU")))
 
 
 # --------------------------------------------------------- the control centre
@@ -811,12 +834,11 @@ def main():
         write(f"safety-{mode}.svg", safety(t))
 
     print("application mockups")
-    write("screen-1-welcome.svg", screen_welcome())
-    write("screen-2-device.svg", screen_device())
-    write("screen-3-account.svg", screen_account())
-    write("screen-4-review.svg", screen_review())
-    write("screen-5-building.svg", screen_building())
-    write("screen-6-ready.svg", screen_ready())
+    write("screen-create.svg", screen_create())
+    write("screen-building.svg", screen_building())
+    write("screen-ready.svg", screen_ready())
+    write("screen-manage.svg", screen_manage())
+    write("screen-manage-settings.svg", screen_manage_settings())
     write("control-center.svg", control_center())
 
     print("social preview")

@@ -71,6 +71,17 @@ jobs:
         shell: pwsh
         run: ./build/Build-Installer.ps1 -Version ${{ steps.version.outputs.fileVersion }}
 
+      - name: Publish a stable filename as well
+        shell: pwsh
+        run: |
+          # The website links to releases/latest/download/AutoVM-Setup.exe, which
+          # only resolves if an asset carries that exact name.
+          $built = Get-Item "dist/AutoVM-Setup-${{ steps.version.outputs.fileVersion }}.exe"
+          Copy-Item $built.FullName 'dist/AutoVM-Setup.exe'
+          $hash = (Get-FileHash $built.FullName -Algorithm SHA256).Hash.ToLower()
+          "$hash  $($built.Name)" | Set-Content 'dist/SHA256SUMS.txt'
+          Write-Host "$($built.Name)  $([math]::Round($built.Length/1MB,1)) MB  sha256 $hash"
+
       - name: Verify the engine loads on Windows PowerShell 5.1
         shell: powershell
         run: |
@@ -89,7 +100,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: AutoVM-Setup-${{ steps.version.outputs.version }}
-          path: dist/AutoVM-Setup-*.exe
+          path: |
+            dist/AutoVM-Setup-*.exe
+            dist/SHA256SUMS.txt
           if-no-files-found: error
           retention-days: 30
 
@@ -97,17 +110,24 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/AutoVM-Setup-*.exe
+          files: |
+            dist/AutoVM-Setup-*.exe
+            dist/AutoVM-Setup.exe
+            dist/SHA256SUMS.txt
           generate_release_notes: true
           body: |
             ## AutoVM ${{ steps.version.outputs.version }}
 
-            Download `AutoVM-Setup-${{ steps.version.outputs.fileVersion }}.exe` below, run it, and start
-            AutoVM from the Start menu.
+            **[Download AutoVM-Setup.exe](https://github.com/iofhouras/AutoVM/releases/latest/download/AutoVM-Setup.exe)**
+            — or pick `AutoVM-Setup-${{ steps.version.outputs.fileVersion }}.exe` from the assets below.
 
-            AutoVM checks what your device can do, sizes a Linux virtual machine to fit it,
-            downloads a verified system image, installs it unattended with the login and
-            password you choose, and leaves a control panel on your desktop.
+            Run it, start AutoVM from the Start menu, choose **Kali Linux Virtual Machine**, type the
+            login and password you want inside it, and press **Create VM Now!**. AutoVM sizes the
+            machine to your device, installs VirtualBox, downloads and verifies the system image,
+            installs it unattended, and then hands you a management screen for power, hardware,
+            restore points and shared folders.
 
-            Needs Windows 10 or 11 (64-bit), administrator rights, hardware virtualization
-            enabled in firmware, and about 45 GB of free disk space.
+            Needs Windows 10 or 11 (64-bit), administrator rights, hardware virtualization enabled in
+            firmware, and about 45 GB of free disk space.
+
+            `SHA256SUMS.txt` lists the checksum of the versioned installer.
